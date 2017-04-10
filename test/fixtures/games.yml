@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  resolutionTime: 2017-04-02 00:32:49
+  player: one
+  mission: one
+  eloDelta: 1
+  xpGained: 1
+
+two:
+  resolutionTime: 2017-04-02 00:32:49
+  player: two
+  mission: two
+  eloDelta: 1
+  xpGained: 1

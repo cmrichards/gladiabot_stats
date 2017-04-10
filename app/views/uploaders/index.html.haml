@@ -1,0 +1,13 @@
+%h1 Upload Data
+
+%h2 Upload Players
+
+= form_tag add_players_uploaders_path, multipart: true do
+  = file_field_tag "file"
+  = submit_tag "Upload"
+
+%h2 Upload Games
+
+= form_tag add_games_uploaders_path, multipart: true do
+  = file_field_tag "file"
+  = submit_tag "Upload"
