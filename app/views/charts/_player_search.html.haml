@@ -1,0 +1,27 @@
+= form_for form, :as=>:form, :url=>charts_url, method: :get, html: {class: "form-inline"} do |f|
+  = f.text_field :player_name,
+                 placeholder: "Enter player name",
+                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
+  = f.text_field :opponent_player_name,
+                 placeholder: "*optional opponent name..",
+                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
+  = f.text_field :start_date,
+                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
+  = f.text_field :end_date,
+                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
+
+  = submit_tag "Show Stats", class: "btn btn-primary"
+
+  .flexContainer{:style=>"margin-top: 10px; padding: 10px; margin-top: 20px; background-color: white; border-radius: 10px;"}
+    - form.available_missions.each do |mission|
+      %label.map{:style=>"margin: 5px;"}
+        = check_box_tag "form[mission_ids][]", mission.id, form.mission_ids.blank? || form.mission_ids.include?(mission.id)
+        &nbsp;
+        = mission.name
+
+- if form.errors.any?
+  %p{:style=>"margin-top: 20px;"}
+    There are issues with this form:
+  %ul
+    - form.errors.full_messages.each do |message|
+      %li= message

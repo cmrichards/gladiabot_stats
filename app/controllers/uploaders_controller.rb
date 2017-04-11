@@ -1,18 +1,30 @@
 class UploadersController < ApplicationController
   require "csv"
 
-  def index ; end
+  def index
+  end
+
+  # Multiple files can be selected at once in the form
+  # Ignore header row and rows with no names
 
   def add_players
-    Player.transaction do
-      CSV.parse(params[:file].read).each do |cols|
-        id, name = cols
-        next if id == "id" || name.blank?
+    if params[:code] != "GLAD"
+      render text: "You must enter the admin code"
+      return
+    end
 
-        if player = Player.find_by(id: id)
-          player.update(name: name)
-        else
-          Player.create!(name: name) { |p| p.id = id }
+    Player.transaction do
+      Array(params[:file]).each do |file|
+        CSV.parse(file.read).each do |cols|
+          id, name = cols
+
+          next if id == "id" || name.blank?
+
+          if player = Player.find_by(id: id)
+            player.update(name: name)
+          else
+            Player.create!(name: name) { |p| p.id = id }
+          end
         end
       end
     end
@@ -20,50 +32,55 @@ class UploadersController < ApplicationController
   end
 
   def add_games
-    file = params[:file].read.encode!(universal_newline: true) # fix strange newlines
+    if params[:code] != "GLAD"
+      render text: "You must enter the admin code"
+      return
+    end
+
     Game.transaction do
-      CSV.parse(file).each do |cols|
-        game_id = cols[0]
-        next if game_id == "id" || Game.exists?(game_id)
+      Array(params[:file]).each do |file|
+        file = file.read.encode!(universal_newline: true) 
+        CSV.parse(file).each do |cols|
+          game_id = cols[0]
 
-        player_1_elo_delta = cols[11].to_i
-        winner_id = case cols[10]
-                    when "1" then cols[5]
-                    when "0" then cols[6]
-                    end
+          # Skip the header row and games already uploaded
+          next if game_id == "id" || Game.exists?(game_id)
 
-        game = Game.create!({
-          id:             game_id,
-          resolutionTime: Time.parse(cols[2]),
-          mission_id:     cols[4],
-          player_id:      winner_id,
-          draw:           cols[10] == "0.5" ? 1 : 0
-        }, without_protection: true) 
+          player_1_elo_delta = cols[11].to_i
+          winner_id = case cols[10]
+                      when "1" then cols[5]
+                      when "0" then cols[6]
+                      end
 
-        game = Game.create! do |g| 
-          g.id = game_id
-          g.resolutionTime = Time.parse(cols[2])
-          g.mission_id = cols[4]
-          g.draw = cols[10] == "0.5" ? 1 : 0
-            p
-        end
+          game = Game.create! do |g|
+            g.id = game_id
+            g.player_id = winner_id
+            g.resolutionTime = Time.parse(cols[2])
+            g.mission_id = cols[4]
+            g.draw = cols[10] == "0.5" ? 1 : 0
+          end
 
-        [
-         [cols[5], cols[8], player_1_elo_delta],
-         [cols[6], cols[7], -player_1_elo_delta]
-        ].each do |player_id, opponent_elo, elo_delta|
-          xp_gained = if player_id == winner_id
-                       opponent_elo.to_f
-                     elsif game.draw == 1
-                       opponent_elo.to_f * 0.5
-                     else
-                       opponent_elo.to_f * 0.25
-                     end
-          game.game_players.create!(player_id: player_id,
-                                    xp_gained: xp_gained,
-                                    elo_delta: elo_delta)
+          [
+            [cols[5], cols[8], player_1_elo_delta],
+            [cols[6], cols[7], -player_1_elo_delta]
+          ].each do |player_id, opponent_elo, elo_delta|
+            xp_gained = if player_id == winner_id
+                        opponent_elo.to_f
+                      elsif game.draw == 1
+                        opponent_elo.to_f * 0.5
+                      else
+                        opponent_elo.to_f * 0.25
+                      end
+            game.game_players.create!(player_id: player_id,
+                                      xp_gained: xp_gained,
+                                      elo_delta: elo_delta)
+          end
         end
       end
+      # Delete games earlier than 7 days before the most recent game
+      # Deletes Game and associated GamePlayer records
+      earliest_allowed = Game.maximum(:resolutionTime) - 7.days
+      Game.where("resolutionTime < ?", earliest_allowed).destroy_all
     end
     render text: "Games were added", layout: false
   end

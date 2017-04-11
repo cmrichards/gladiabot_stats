@@ -1,13 +1,22 @@
-%h1 Upload Data
+%p
+  Any games or players that already exist in the DB in the uploaded files will be ignored.
+%p
+  It can take a long time to process the uploaded data.
 
-%h2 Upload Players
+%p
+  Select player dump files :
+  = form_tag add_players_uploaders_path, multipart: true do
+    = text_field_tag "code", "", placeholder: "Enter admin code"
+    = file_field_tag "file[]", multiple: true
+    = submit_tag "Upload Player Dump Files"
 
-= form_tag add_players_uploaders_path, multipart: true do
-  = file_field_tag "file"
-  = submit_tag "Upload"
+%p
+  Select game dump files :
+  %br/
+  Any games more than seven days older than the most recent game are automatically deleted after a new dump is uploaded.
+  %b/
 
-%h2 Upload Games
-
-= form_tag add_games_uploaders_path, multipart: true do
-  = file_field_tag "file"
-  = submit_tag "Upload"
+  = form_tag add_games_uploaders_path, multipart: true do
+    = text_field_tag "code", "", placeholder: "Enter admin code"
+    = file_field_tag "file[]", multiple: true
+    = submit_tag "Upload Game Dump Files"

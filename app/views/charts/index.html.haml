@@ -1,0 +1,30 @@
+.row
+  .col
+    .box{:style=>"padding: 20px; margin-top: 10px; margin-bottom: 20px; border: 1px solid #DDD; background-color: #EFEFEF;"}
+      = render "player_search", form: @form
+
+.flexContainer
+  - if @stacked_map
+    .bigItem1
+      = render "stacked_bar_chart", chart: @stacked_map, series: @stacked_map.series
+      .flexContainer
+        - @map_stats.each do |map_stat|
+          .item{data: { map_chart: true,
+                        title: map_stat.title,
+                        win: map_stat.win,
+                        lose: map_stat.lose,
+                        draw: map_stat.draw }}
+
+  - if @stacked_players
+    .bigItem2
+      = render "stacked_bar_chart", chart: @stacked_players
+    .bigItem2
+      = render "stacked_bar_chart", chart: @stacked_players_elo_delta
+
+:javascript
+  $(function() {
+    $(".item[data-map-chart]").each(function(index) {
+      var div = $(this);
+      createMapChart(this, div.data("title"), div.data("win"), div.data("lose"), div.data("draw"));
+    });
+  });

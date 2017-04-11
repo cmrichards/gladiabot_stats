@@ -7,4 +7,8 @@ Rails.application.routes.draw do
       post "add_games"
     end
   end
+
+  resources :charts
+
+  root "uploaders#index"
 end

@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170401233303) do
+ActiveRecord::Schema.define(version: 20170410133509) do
 
   create_table "game_players", force: :cascade do |t|
-    t.integer  "player_id"
-    t.integer  "game_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "player_id"
+    t.integer "game_id"
+    t.float   "xp_gained"
+    t.float   "elo_delta"
     t.index ["game_id"], name: "index_game_players_on_game_id"
     t.index ["player_id"], name: "index_game_players_on_player_id"
   end
@@ -25,11 +25,7 @@ ActiveRecord::Schema.define(version: 20170401233303) do
     t.datetime "resolutionTime"
     t.integer  "player_id"
     t.integer  "mission_id"
-    t.integer  "eloDelta"
-    t.integer  "xpGained"
     t.integer  "draw"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
     t.index ["mission_id"], name: "index_games_on_mission_id"
     t.index ["player_id"], name: "index_games_on_player_id"
   end
@@ -41,11 +37,7 @@ ActiveRecord::Schema.define(version: 20170401233303) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "elo"
-    t.integer  "xp"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name", limit: 20
   end
 
 end

@@ -1,0 +1,37 @@
+<div style="max-width: 800px; min-height: <%= 120 + chart.categories.size * 23%>px;" id="<%= chart.object_id %>" >
+</div>
+
+<script>
+Highcharts.chart('<%= chart.object_id %>', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: '<%= chart.title %>'
+    },
+    xAxis: {
+        categories: [ <%= raw chart.categories.map{|name| "'#{name}'"}.join(",") %> ]
+    },
+    yAxis: {
+        title: {
+            text: 'Number of games'
+        }
+    },
+    legend: {
+        reversed: true
+    },
+    plotOptions: {
+        series: {
+            stacking: 'normal'
+        }
+    },
+    series: [
+        <% chart.series.each do |series| %>
+        {
+            name: '<%= series[0] %>',
+            data: [ <%= series[1].map(&:to_s).join(", ") %> ]
+        },
+        <% end %>
+    ]
+});
+</script>
