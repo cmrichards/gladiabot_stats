@@ -5,4 +5,8 @@ class Player < ApplicationRecord
     where(["upper(name) = upper(?)", name]).first
   end
 
+  def name
+    super || "[id=#{self.id}]"
+  end
+
 end

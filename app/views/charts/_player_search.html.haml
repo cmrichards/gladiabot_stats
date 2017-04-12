@@ -1,4 +1,5 @@
-= form_for form, :as=>:form, :url=>charts_url, method: :get, html: {class: "form-inline"} do |f|
+= form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form-inline"} do |f|
+
   = f.text_field :player_name,
                  placeholder: "Enter player name",
                  class: "form-control mb-2 mr-sm-2 mb-sm-0"
@@ -12,10 +13,16 @@
 
   = submit_tag "Show Stats", class: "btn btn-primary"
 
-  .flexContainer{:style=>"margin-top: 10px; padding: 10px; margin-top: 20px; background-color: white; border-radius: 10px;"}
+  .flexContainer.mapSelection
+
+    %label{:style=>"font-size: 80%;"}
+      = link_to "Select All", "#", onclick: "$('input.mission_select').prop('checked', true); return false;"
+      &nbsp;|&nbsp;
+      = link_to "Unselect All", "#", onclick: "$('input.mission_select').prop('checked', false); return false;"
+
     - form.available_missions.each do |mission|
-      %label.map{:style=>"margin: 5px;"}
-        = check_box_tag "form[mission_ids][]", mission.id, form.mission_ids.blank? || form.mission_ids.include?(mission.id)
+      %label.map
+        = check_box_tag "form[mission_ids][]", mission.id, form.mission_ids.blank? || form.mission_ids.include?(mission.id), class: "mission_select"
         &nbsp;
         = mission.name
 

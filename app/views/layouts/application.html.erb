@@ -15,7 +15,10 @@
     <div class="container-fluid">
         <ul class="nav nav-tabs" style="margin-bottom: 20px;">
             <li class="nav-item">
-                <%= link_to "Charts", charts_url, class: "nav-link #{'active' if controller_name=='charts'}" %>
+                <%= link_to "Player Charts", player_charts_url, class: "nav-link #{'active' if action_name=='player'}" %>
+            </li>
+            <li class="nav-item">
+                <%= link_to "Global Charts", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
             </li>
             <li class="nav-item">
                 <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>

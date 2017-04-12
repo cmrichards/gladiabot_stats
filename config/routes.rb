@@ -8,7 +8,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :charts
+  resources :charts do
+    collection do
+      get "player"
+      get "global"
+    end
+  end
 
-  root "uploaders#index"
+  root "charts#player"
 end
