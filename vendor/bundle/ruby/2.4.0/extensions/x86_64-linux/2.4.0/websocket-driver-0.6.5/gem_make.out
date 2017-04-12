@@ -1,0 +1,15 @@
+current directory: /home/rails/gladiabot_stats/vendor/bundle/ruby/2.4.0/gems/websocket-driver-0.6.5/ext/websocket-driver
+/usr/local/rvm/rubies/ruby-2.4.0/bin/ruby -r ./siteconf20170411-25569-w23gk4.rb extconf.rb
+creating Makefile
+
+current directory: /home/rails/gladiabot_stats/vendor/bundle/ruby/2.4.0/gems/websocket-driver-0.6.5/ext/websocket-driver
+make "DESTDIR=" clean
+
+current directory: /home/rails/gladiabot_stats/vendor/bundle/ruby/2.4.0/gems/websocket-driver-0.6.5/ext/websocket-driver
+make "DESTDIR="
+compiling websocket_mask.c
+linking shared-object websocket_mask.so
+
+current directory: /home/rails/gladiabot_stats/vendor/bundle/ruby/2.4.0/gems/websocket-driver-0.6.5/ext/websocket-driver
+make "DESTDIR=" install
+/usr/bin/install -m 0755 websocket_mask.so ./.gem.20170411-25569-pstfqg
