@@ -3,23 +3,15 @@
   #{Game.minimum(:resolutionTime).to_s(:long)}
   and
   #{Game.maximum(:resolutionTime).to_s(:long)}
+  
 = form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form-inline"} do |f|
-
-  = f.text_field :player_name,
-                 placeholder: "Enter player name",
-                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = f.text_field :opponent_player_name,
-                 placeholder: "*optional opponent name..",
-                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = f.text_field :start_date,
-                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = f.text_field :end_date,
-                 class: "form-control mb-2 mr-sm-2 mb-sm-0"
-
+  = f.text_field :player_name, placeholder: "Enter player name", class: "form-control mb-2 mr-sm-2 mb-sm-0"
+  = f.text_field :opponent_player_name, placeholder: "*optional opponent name..", class: "form-control mb-2 mr-sm-2 mb-sm-0"
+  = f.text_field :start_date, class: "form-control mb-2 mr-sm-2 mb-sm-0"
+  = f.text_field :end_date,   class: "form-control mb-2 mr-sm-2 mb-sm-0"
   = submit_tag "Show Stats", class: "btn btn-primary"
 
   .flexContainer.mapSelection
-
     %label{:style=>"font-size: 80%;"}
       = link_to "Select All", "#", onclick: "$('input.mission_select').prop('checked', true); return false;"
       &nbsp;|&nbsp;
