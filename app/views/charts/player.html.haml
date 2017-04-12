@@ -2,11 +2,9 @@
   = render "player_search", form: @form
 
 - if @stacked_map_chart
-
   .flexContainer
     .bigItem1
       = render "stacked_bar_chart", chart: @stacked_map_chart
-
       .flexContainer
         - @individual_map_stats.each do |map_stat|
           .item{data: { map_chart: true,
@@ -15,7 +13,6 @@
                         lose: map_stat.lose,
                         draw: map_stat.draw }}
             &nbsp;
-
       :javascript
         $(function() {
           $(".item[data-map-chart]").each(function(index) {
@@ -26,10 +23,8 @@
 
     .bigItem2
       = render "stacked_bar_chart", chart: @stacked_players_chart
-
     .bigItem2
       = render "stacked_bar_chart", chart: @stacked_players_elo_delta_chart
-
     .tableItem
       %h4 Lost/Drawn Games for #{@form.player.name}
       = render "games", games: @lost_and_drawn_games, main_player_id: @form.player.id
