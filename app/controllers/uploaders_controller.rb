@@ -77,7 +77,7 @@ class UploadersController < ApplicationController
           end
         end
       end
-      # Delete games earlier than 7 days before the most recent game
+      # Delete games earlier than 21 days before the most recent game
       # Deletes Game and associated GamePlayer records
       if Game.maximum(:resolutionTime)
 	      earliest_allowed = Game.maximum(:resolutionTime) - (3*7).days
