@@ -1,3 +1,8 @@
+%p
+  Data is available for games between:
+  #{Game.minimum(:resolutionTime).to_s(:long)}
+  and
+  #{Game.maximum(:resolutionTime).to_s(:long)}
 = form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form-inline"} do |f|
 
   = f.text_field :player_name,

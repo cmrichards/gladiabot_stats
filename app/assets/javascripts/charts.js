@@ -10,6 +10,10 @@ function createMapChart(div, title, win, lose, draw) {
         },
         title: {
             text: title,
+            margin: 0,
+            style: {
+                fontSize: "13px"
+            }
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

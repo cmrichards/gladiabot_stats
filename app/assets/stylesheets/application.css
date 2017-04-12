@@ -24,15 +24,15 @@ body {
     justify-content: center;
 }
 .item {
-    width: 180px;
-    min-width: 180px;
-    min-height: 200px;
-    margin: 20px;
-    flex-grow: 1;
+    width: 140px;
+    min-width: 140px;
+    min-height: 185px;
+    margin: 0px;
+    margin-right: 10px;
 }
 
 .tableItem {
-    min-width: 800px;
+    padding: 20px;
     margin-top: 20px;
 }
 
@@ -60,9 +60,16 @@ label.map {
     background-color: #EFEFEF;
 }
 
+.search_box p {
+    font-size: 80%;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
 .mapSelection {
     margin-top: 10px;
-    padding: 10px;
+    padding: 6px;
     margin-top: 20px;
     background-color: white;
     border-radius: 10px;
@@ -73,5 +80,5 @@ label.map {
 }
 
 .games-table td, .games-table th {
-    font-size: 80%;
+    font-size: 75%;
 }
