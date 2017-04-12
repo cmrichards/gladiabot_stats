@@ -4,6 +4,8 @@ A ruby on rails application that can parse Gladiabots player and game dump files
 
 Application code is in app/
 
+**Install Instructions**
+
 1. Clone repo
 2. Install ruby 2.4 or 2.3
 3. CD into repo folder
