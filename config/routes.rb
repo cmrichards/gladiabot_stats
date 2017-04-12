@@ -10,5 +10,5 @@ Rails.application.routes.draw do
 
   resources :charts
 
-  root "uploaders#index"
+  root "charts#index"
 end

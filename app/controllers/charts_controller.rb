@@ -8,7 +8,7 @@ class ChartsController < ApplicationController
       player_stats  = PlayerStat.create_player_stats(@form)
       @stacked_players = StackedPlayerGamesChart.new(@form, player_stats)
       @stacked_players_elo_delta = StackedPlayerEloDeltaChart.new(@form, player_stats,
-                                                                  number_of_players: 30)
+                                                                  number_of_players: 50)
 
       @stacked_map = StackedMapChart.new(@form)
       @map_stats   = @stacked_map.map_stats
@@ -17,8 +17,6 @@ class ChartsController < ApplicationController
 
   def global
   end
-
-  # POST /charts
 
   private
 
@@ -103,7 +101,7 @@ class ChartsController < ApplicationController
 
   class StackedPlayerGamesChart
 
-    def initialize(form, player_stats, number_of_players: 30)
+    def initialize(form, player_stats, number_of_players: 50)
       @form = form
       @number_of_players = number_of_players
       @stats = player_stats.sort_by(&:total_games).

@@ -79,8 +79,10 @@ class UploadersController < ApplicationController
       end
       # Delete games earlier than 7 days before the most recent game
       # Deletes Game and associated GamePlayer records
-      earliest_allowed = Game.maximum(:resolutionTime) - 7.days
-      Game.where("resolutionTime < ?", earliest_allowed).destroy_all
+      if Game.maximum(:resolutionTime)
+	      earliest_allowed = Game.maximum(:resolutionTime) - (3*7).days
+	      Game.where("resolutionTime < ?", earliest_allowed).destroy_all
+      end
     end
     render text: "Games were added", layout: false
   end
