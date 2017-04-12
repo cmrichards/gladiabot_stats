@@ -1,3 +1,7 @@
+**Gladiabots Stats**
+
+A ruby on rails application that can parse Gladiabots player and game dump files and generate graphs
+
 1. Clone repo
 2. Install ruby 2.4 or 2.3
 3. CD into repo folder
