@@ -1,0 +1,53 @@
+<div style="width: 100%; min-height: 200px;" id="<%= chart.object_id %>" >
+</div>
+
+<script>
+Highcharts.chart('<%= chart.object_id %>', {
+    chart: {
+        type: 'area'
+    },
+    title: {
+        text: '<%= chart.title %>',
+        //margin: 0,
+        style: {
+            // fontSize: "13px"
+        }
+    },
+    xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: { // don't display the dummy year
+            month: '%e. %b',
+            year: '%b'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    yAxis: {
+        title: {
+            text: '<%= chart.y_axis_title %>'
+        }
+    },
+    tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.x:%e. %b}: {point.y:.2f}'
+    },
+    plotOptions: {
+        spline: {
+            marker: {
+                enabled: true
+            }
+        }
+    },
+    series: [
+       <% chart.series.each do |series| %>
+       {
+           name: '<%= series[0] %>',
+           data: [
+               <%= series[1].map{|e| "[Date.UTC(#{e.date.year},#{e.date.month-1},#{e.date.day}),#{e.elo_delta}]"}.join(", ")  %>
+           ]
+       },
+       <% end %>
+    ]
+});
+</script>

@@ -1,16 +1,48 @@
+:javascript
+  function addDatePicker(id) {
+    var picker = new Pikaday({
+      field: document.getElementById(id),
+      format: 'DD MMM YYYY'
+    });
+  }
+  $(function() {
+    addDatePicker('date-from');
+    addDatePicker('date-to');
+  });
+
 - if Game.exists?
   %p
     Data is available for games between:
     #{Game.minimum(:resolution_time).to_s(:long)}
     and
     #{Game.maximum(:resolution_time).to_s(:long)}
-  
-= form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form-inline"} do |f|
-  = f.text_field :player_name, placeholder: "Enter player name", class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = f.text_field :opponent_player_name, placeholder: "*optional opponent name..", class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = f.text_field :start_date, class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = f.text_field :end_date,   class: "form-control mb-2 mr-sm-2 mb-sm-0"
-  = submit_tag "Show Stats", class: "btn btn-primary"
+
+= form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form"} do |f|
+  .row
+    .col-2
+      .form-group
+        %label.tiny Player Name
+        = f.text_field :player_name, placeholder: "Enter player name", class: "form-control mb-2 mr-sm-2 mb-sm-0",
+          required: true
+    .col-2
+      .form-group
+        %label.tiny Opponent Name
+        = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control mb-2 mr-sm-2 mb-sm-0"
+    .col-2
+      .form-group
+        %label.tiny Date From
+        = f.text_field :start_date, class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-from",
+          value: (form.start_date && form.start_date.strftime("%d %b %Y"))
+    .col-2
+      .form-group
+        %label.tiny Date To
+        = f.text_field :end_date,   class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-to",
+          value: (form.end_date && form.end_date.strftime("%d %b %Y"))
+    .col-2
+      .form-group
+        %label.tiny &nbsp;
+        %br/
+        = submit_tag "Show Stats", class: "btn btn-primary"
 
   .flexContainer.mapSelection
     %label{:style=>"font-size: 80%;"}
