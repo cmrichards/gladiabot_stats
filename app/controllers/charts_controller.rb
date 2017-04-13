@@ -6,8 +6,8 @@ class ChartsController < ApplicationController
     @form = PlayerForm.new params[:form]
     if params[:form] && @form.valid?
 
-      elo_dates = EloChangeLineChart.create_elo_dates(@form)
-      @elo_change_line_chart = EloChangeLineChart.new(@form, elo_dates)
+      elo_dates = EloDate.create_elo_dates(@form)
+      @elo_change_line_chart = EloChangeLineChart.new(elo_dates)
 
       @individual_map_stats = MapStat.create_map_stats(@form)
       @stacked_map_chart    = StackedMapChart.new(@form, @individual_map_stats)
@@ -80,22 +80,26 @@ class ChartsController < ApplicationController
     end
   end
 
-  class EloChangeLineChart
-
-    class EloDate
-      attr_accessor :elo_delta, :date, :number_of_games
-    end
+  class EloDate
+    attr_accessor :elo_delta,
+                  :date,
+                  :number_of_games
 
     def self.create_elo_dates(form)
       games = Game.
               select("date_trunc('day', resolution_time) date, sum(game_players.elo_delta) elo_delta, count(games.id) no_games").
               joins(:game_players).
-              where(mission_id: form.selected_missions.map(&:id), game_players: { player_id: form.player.id }).
+              where(
+                mission_id: form.selected_missions.map(&:id),
+                game_players: {
+                  player_id: form.player.id
+                }
+              ).
               where(resolution_time: form.date_range).
               group("date_trunc('day', resolution_time)")
       if form.opponent
         games = games.joins("inner join game_players opponent_game_player on opponent_game_player.game_id = games.id").
-                      where("opponent_game_player.player_id != ?", opponent.player_id)
+                where("opponent_game_player.player_id = ?", form.opponent.id)
       end
       games.map do |row| 
         EloDate.new.tap do |ed|
@@ -105,9 +109,11 @@ class ChartsController < ApplicationController
         end
       end
     end
+  end
 
-    def initialize(form, elo_dates)
-      @form = form
+  class EloChangeLineChart
+
+    def initialize(elo_dates)
       @elo_dates = elo_dates.sort_by(&:date)
     end
 
@@ -124,7 +130,6 @@ class ChartsController < ApplicationController
         ["Elo Delta", @elo_dates ]
       ]
     end
-
   end
 
   class StackedMapChart
