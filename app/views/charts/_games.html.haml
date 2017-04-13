@@ -9,10 +9,8 @@
   %tbody
     - games.each do |game|
       %tr{class: (game.draw? ? "table-warning" : "table-danger")}
-        - main = game.game_players.detect{|gp| gp.player_id == main_player_id }
-        - opponent = game.game_players.detect{|gp| gp.player_id != main_player_id }
-        %td= game.resolutionTime.to_s :long
+        %td= game.resolution_time.to_s :long
         %td= game.id
-        %td= opponent.player ? opponent.player.name : opponent.player_id
-        %td= game.mission.name
-        %td= main.elo_delta
+        %td= game.opponent_name || game.opponent_id
+        %td= game.mission_name
+        %td= game.elo_delta

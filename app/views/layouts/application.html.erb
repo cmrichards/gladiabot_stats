@@ -20,9 +20,11 @@
             <li class="nav-item">
                 <%= link_to "Global Charts", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
             </li>
+            <% if false %>
             <li class="nav-item">
                 <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>
             </li>
+            <% end %>
             <li class="nav-item">
             </li>
         </ul>

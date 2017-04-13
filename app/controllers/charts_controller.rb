@@ -5,12 +5,12 @@ class ChartsController < ApplicationController
   def player
     @form = PlayerForm.new params[:form]
     if params[:form] && @form.valid?
-      # Create map charts
-      @stacked_map_chart = StackedMapChart.new(@form)
-      @individual_map_stats = @stacked_map_chart.map_stats
-
-      @lost_and_drawn_games = (@individual_map_stats.map(&:lost_games) + @individual_map_stats.map(&:drawn_games)).
-                              flatten.sort_by(&:resolutionTime).reverse
+      @individual_map_stats = MapStat.create_map_stats(@form)
+      @stacked_map_chart    = StackedMapChart.new(@form, @individual_map_stats)
+      @stacked_map_chart_elo_delta  = StackedMapChartEloDelta.new(@form, @individual_map_stats)
+      @lost_and_drawn_games = Game.lost_or_drawn(@form.player.id).
+                                   where(mission_id: @form.selected_missions.map(&:id)).
+                                   where(resolution_time: @form.date_range)
 
       # Create 'Top X played against' and 'Top X Elo Delta' charts
       player_stats  = PlayerStat.create_player_stats(@form)
@@ -55,11 +55,11 @@ class ChartsController < ApplicationController
     end
 
     def selected_missions
-      Mission.find(mission_ids)
+      @sm ||= Mission.find(mission_ids)
     end
 
     def available_missions
-      Mission.all
+      @am ||= Mission.all
     end
 
     private
@@ -77,14 +77,9 @@ class ChartsController < ApplicationController
   end
 
   class StackedMapChart
-    attr_reader :map_stats
-
-    def initialize(form)
+    def initialize(form, map_stats)
       @form = form
-      @map_stats  = @form.selected_missions.
-                          map { |mission| MapStat.create_map_stat(mission, form) }.
-                          select(&:has_games?).
-                          sort_by(&:lose_percentage)
+      @map_stats  = map_stats.sort_by(&:lose_percentage)
       @missions   = @map_stats.map(&:mission)
     end
 
@@ -96,6 +91,10 @@ class ChartsController < ApplicationController
       @missions.map(&:name)
     end
 
+    def y_axis_title
+      "Number of Games"
+    end
+
     def series
       [
         [ "Draw", @missions.map { |m| @map_stats.find{ |ms| ms.mission == m }.draw } ],
@@ -105,56 +104,34 @@ class ChartsController < ApplicationController
     end
   end
 
-  class MapStat
-    attr_accessor :title, :win, :draw, :lose, :player, :mission, :all_games
+  class StackedMapChartEloDelta
 
-    def self.create_map_stats(form)
-      form.selected_missions.map { |mission| MapStat.create_map_stat(mission, form) }
+    def initialize(form, map_stats)
+      @form = form
+      @map_stats  = map_stats.sort_by(&:lose_percentage)
+      @missions   = @map_stats.map(&:mission)
     end
 
-    # TODO: replace with one query
-
-    def self.create_map_stat(mission, form)
-      games = Game.joins(:game_players).
-                   where(
-                     mission_id:     mission.id,
-                     resolutionTime: form.date_range,
-                     game_players:   {
-                       player_id: form.player.id
-                     }
-                  )
-      games = games.with_opponent(form.opponent.id) if form.opponent
-      MapStat.new.tap do |g|
-        g.title   = mission.name
-        g.player  = form.player
-        g.mission = mission
-        g.win     = games.where(player_id: form.player.id).count
-        g.lose    = games.where.not(player_id: form.player.id).count
-        g.draw    = games.where(draw: 1).count
-        g.all_games = games.includes(:mission, :game_players=>:player)
-      end
+    def title
+      "Elo Delta for " + (@form.opponent ? "games between #{@form.player.name} and #{@form.opponent.name}" : "All Maps")
     end
 
-    def drawn_games
-      all_games.select{ |g| g.draw == 1}
+    def categories
+      ["Total"] + @missions.map(&:name)
     end
 
-    def lost_games
-      all_games.select{ |g| g.draw != 1 && g.player_id != player.id }
+    def y_axis_title
+      "Elo"
     end
 
-    def has_games?
-      total_games > 0
-    end
-
-    def total_games
-      win + lose + draw
-    end
-
-    def lose_percentage
-      lose / total_games.to_f * 100.0
+    def series
+      total_elo_delta = @map_stats.sum(&:elo_delta)
+      [
+        [ "Elo Delta", [total_elo_delta] + @missions.map { |m| @map_stats.find{ |ms| ms.mission == m }.elo_delta } ]
+      ]
     end
   end
+
 
   class StackedPlayerGamesChart
 
@@ -172,6 +149,10 @@ class ChartsController < ApplicationController
 
     def categories
       @opponents.map(&:name)
+    end
+
+    def y_axis_title
+      "Number of Games"
     end
 
     def series
@@ -201,10 +182,65 @@ class ChartsController < ApplicationController
       @opponents.map(&:name)
     end
 
+    def y_axis_title
+      "Elo"
+    end
+
     def series
       [
         [ "Elo Delta",  @opponents.map { |o| @stats.find{ |ms| ms.opponent.id == o.id }.elo_delta  } ]
       ]
+    end
+  end
+
+  class MapStat
+    attr_accessor :mission, :title, :win, :draw, :lose, :player, :elo_delta
+
+    def self.create_map_stats(form)
+      sql = [
+        "SELECT
+          games.mission_id,
+          sum(CASE WHEN games.player_id=:player_id THEN 1 else 0 END) win,
+          sum(CASE WHEN games.draw=0 and games.player_id!=:player_id THEN 1 else 0 END) lose,
+          SUM(games.draw) draw,
+          SUM(game_players.elo_delta) elo_delta,
+          COUNT(*) total
+        FROM games
+        INNER JOIN game_players ON game_players.game_id = games.id
+        #{"INNER JOIN game_players opponent ON opponent.game_id = games.id" if form.opponent}
+        WHERE
+          games.mission_id    IN (:mission_ids)
+          AND game_players.player_id = :player_id
+          AND games.resolution_time between :start_date and :end_date
+          #{"AND opponent.player_id = :opponent_id" if form.opponent}
+        GROUP BY games.mission_id",
+        {
+          player_id:   form.player.id,
+          opponent_id: form.opponent.try(:id),
+          mission_ids: form.selected_missions.map(&:id),
+          start_date:  form.date_range.first, end_date: form.date_range.last
+        }
+      ]
+      Game.find_by_sql(sql).map do |row|
+        mission = form.selected_missions.find{ |m| m.id == row.mission_id }
+        MapStat.new.tap do |g|
+          g.player  = form.player
+          g.title   = mission.name
+          g.mission = mission
+          g.win     = row.win
+          g.lose    = row.lose
+          g.draw    = row.draw
+          g.elo_delta= row.elo_delta
+        end
+      end
+    end
+
+    def total_games
+      win + lose + draw
+    end
+
+    def lose_percentage
+      lose / total_games.to_f * 100.0
     end
   end
 
@@ -215,39 +251,44 @@ class ChartsController < ApplicationController
                   :win, :draw, :lose,
                   :elo_delta
 
-    # TODO: replace with one query
-
     def self.create_player_stats(form)
-      games = Game.joins(:game_players).
-                   includes(:game_players => :player).
-                   where(
-                     mission_id:     form.selected_missions.map(&:id),
-                     resolutionTime: form.date_range,
-                     game_players:   {
-                       player_id: form.player.id
-                     }
-                   )
-
-      # Group all games for this player by opponent player
-      games.
-        group_by { |game|
-          game_player = game.game_players.find{ |gp| gp.player_id != form.player.id }
-          # Player record might not exist
-          game_player.player || Player.new(id: game_player.player_id)
-        }.
-        map { |opponent_player, games|
-          PlayerStat.new.tap do |g|
-            g.player   = form.player
-            g.opponent = opponent_player
-            g.missions = form.selected_missions
-            g.win      = games.select{ |g| g.player_id == form.player.id }.size
-            g.lose     = games.select{ |g| g.player_id.present? && g.player_id != form.player.id }.size
-            g.draw     = games.select{ |g| g.draw == 1 }.size
-            g.elo_delta = games.sum { |g|
-              g.game_players.find{ |gp| gp.player_id == form.player.id }.elo_delta
-            }
-          end
+      sql = [
+        "SELECT 
+          opponent_game_player.player_id opponent_id,
+          opponent.name opponent_name,
+          sum(CASE WHEN games.player_id=118911 THEN 1 else 0 END) win,
+          sum(CASE WHEN games.draw=0 and games.player_id!=:player_id THEN 1 else 0 END) lose,
+          SUM(games.draw) draw,
+          SUM(game_players.elo_delta) elo_delta,
+          COUNT(*)
+        FROM games
+          INNER JOIN game_players
+          ON game_players.game_id  = games.id
+          INNER JOIN game_players opponent_game_player
+          on opponent_game_player.game_id = games.id and opponent_game_player.player_id != :player_id
+          LEFT OUTER join players opponent on opponent.id = opponent_game_player.player_id
+        WHERE
+          games.mission_id IN (:mission_ids) AND
+          game_players.player_id = :player_id AND
+          games.resolution_time between :start_date and :end_date
+        GROUP BY opponent_game_player.player_id, opponent.name",
+        {
+          player_id:   form.player.id,
+          mission_ids: form.selected_missions.map(&:id),
+          start_date:  form.date_range.first, end_date: form.date_range.last
         }
+      ]
+      Game.find_by_sql(sql).map do |row|
+        PlayerStat.new.tap do |g|
+          g.player   = form.player
+          g.opponent = Player.new(id: row.opponent_id, name: row.opponent_name)
+          g.missions = form.selected_missions
+          g.win      = row.win
+          g.lose     = row.lose
+          g.draw     = row.draw
+          g.elo_delta= row.elo_delta
+        end
+      end
     end
 
     def total_games

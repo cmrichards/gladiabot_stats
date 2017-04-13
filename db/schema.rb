@@ -12,22 +12,27 @@
 
 ActiveRecord::Schema.define(version: 20170410133509) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "game_players", force: :cascade do |t|
     t.integer "player_id"
     t.integer "game_id"
     t.float   "xp_gained"
     t.float   "elo_delta"
-    t.index ["game_id"], name: "index_game_players_on_game_id"
-    t.index ["player_id"], name: "index_game_players_on_player_id"
+    t.index ["game_id"], name: "index_game_players_on_game_id", using: :btree
+    t.index ["player_id"], name: "index_game_players_on_player_id", using: :btree
   end
 
   create_table "games", force: :cascade do |t|
-    t.datetime "resolutionTime"
+    t.datetime "resolution_time"
     t.integer  "player_id"
     t.integer  "mission_id"
     t.integer  "draw"
-    t.index ["mission_id"], name: "index_games_on_mission_id"
-    t.index ["player_id"], name: "index_games_on_player_id"
+    t.index ["draw"], name: "index_games_on_draw", using: :btree
+    t.index ["mission_id"], name: "index_games_on_mission_id", using: :btree
+    t.index ["player_id"], name: "index_games_on_player_id", using: :btree
+    t.index ["resolution_time"], name: "index_games_on_resolution_time", using: :btree
   end
 
   create_table "missions", force: :cascade do |t|
@@ -37,7 +42,9 @@ ActiveRecord::Schema.define(version: 20170410133509) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.string "name", limit: 20
+    t.string "name", limit: 18
   end
 
+  add_foreign_key "game_players", "games"
+  add_foreign_key "games", "missions"
 end

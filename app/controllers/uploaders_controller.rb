@@ -55,7 +55,7 @@ class UploadersController < ApplicationController
           game = Game.create! do |g|
             g.id = game_id
             g.player_id = winner_id
-            g.resolutionTime = Time.parse(cols[2])
+            g.resolution_time = Time.parse(cols[2])
             g.mission_id = cols[4]
             g.draw = cols[10] == "0.5" ? 1 : 0
           end
@@ -79,10 +79,10 @@ class UploadersController < ApplicationController
       end
       # Delete games earlier than 21 days before the most recent game
       # Deletes Game and associated GamePlayer records
-      if false && Game.maximum(:resolutionTime)
-	      earliest_allowed = Game.maximum(:resolutionTime) - (3*7).days
-	      Game.where("resolutionTime < ?", earliest_allowed).destroy_all
-      end
+      #if false && Game.maximum(:resolution_time)
+	      #earliest_allowed = Game.maximum(:resolution_time) - (3*7).days
+	      #Game.where("resolution_time < ?", earliest_allowed).destroy_all
+      #end
     end
     render text: "Games were added", layout: false
   end

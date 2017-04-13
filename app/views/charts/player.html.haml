@@ -5,6 +5,7 @@
   .flexContainer
     .bigItem1
       = render "stacked_bar_chart", chart: @stacked_map_chart
+      = render "stacked_bar_chart", chart: @stacked_map_chart_elo_delta
       .flexContainer
         - @individual_map_stats.each do |map_stat|
           .item{data: { map_chart: true,

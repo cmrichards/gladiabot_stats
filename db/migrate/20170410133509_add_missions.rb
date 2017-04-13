@@ -1,5 +1,6 @@
 class AddMissions < ActiveRecord::Migration[5.0]
-  def change
+  def up
+    return
     ids = {
       220 => "The seven wonders",
       230 => "Set your priorities",

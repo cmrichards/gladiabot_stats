@@ -1,8 +1,8 @@
 %p
-  - if Game.maximum(:resolutionTime)
+  - if Game.maximum(:resolution_time)
     %b 
       Last game uploaded was on 
-      = Game.maximum(:resolutionTime).to_s(:long)
+      = Game.maximum(:resolution_time).to_s(:long)
 %p
   Any games or players that already exist in the DB in the uploaded files will be ignored.
 %p
@@ -17,9 +17,9 @@
 
 %p
   Select game dump files :
-  %br/
-  Any games more than 21 days older than the most recent game are automatically deleted after a new dump is uploaded.
-  %b/
+  - if false
+    %br/
+    Any games more than 21 days older than the most recent game are automatically deleted after a new dump is uploaded.
 
   = form_tag add_games_uploaders_path, multipart: true do
     = text_field_tag "code", "", placeholder: "Enter admin code"
