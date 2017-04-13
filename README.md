@@ -2,7 +2,7 @@
 
 A ruby on rails application that can parse Gladiabots player and game dump files and generate graphs
 
-Application code is in app/
+It is hosted here: http://138.68.161.28
 
 **Install Instructions**
 
