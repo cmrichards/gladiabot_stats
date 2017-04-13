@@ -7,8 +7,9 @@ class Game < ApplicationRecord
     draw == 1
   end
 
-  def self.lost_or_drawn(player_id)
-    Game.select("games.*, missions.name mission_name, opponent_game_player.player_id opponent_id, opponent.name opponent_name, game_players.elo_delta").
+  def self.lost_or_drawn(player_id, opponent_id=nil)
+    games= Game.
+         select("games.*, missions.name mission_name, opponent_game_player.player_id opponent_id, opponent.name opponent_name, game_players.elo_delta").
          joins(:game_players, :mission).
          joins("inner join game_players opponent_game_player on opponent_game_player.game_id = games.id").
          joins("left outer join players opponent on opponent.id = opponent_game_player.player_id").
@@ -19,5 +20,7 @@ class Game < ApplicationRecord
          ).
          where("opponent_game_player.player_id != ?", player_id).
          where("games.draw = 1 or games.player_id!=?", player_id)
+    games = games.where("opponent_game_player.player_id = ?", opponent_id) if opponent_id.present?
+    games
   end
 end

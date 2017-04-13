@@ -8,10 +8,11 @@ class ChartsController < ApplicationController
       @individual_map_stats = MapStat.create_map_stats(@form)
       @stacked_map_chart    = StackedMapChart.new(@form, @individual_map_stats)
       @stacked_map_chart_elo_delta  = StackedMapChartEloDelta.new(@form, @individual_map_stats)
-      @lost_and_drawn_games = Game.lost_or_drawn(@form.player.id).
+      @lost_and_drawn_games = Game.lost_or_drawn(@form.player.id, @form.opponent.try(:id)).
                                    where(mission_id: @form.selected_missions.map(&:id)).
                                    where(resolution_time: @form.date_range).
                                    order("resolution_time desc")
+      @lost_and_drawn_agains = @lost_and_drawn_agains
 
       # Create 'Top X played against' and 'Top X Elo Delta' charts
       player_stats  = PlayerStat.create_player_stats(@form)
@@ -85,7 +86,7 @@ class ChartsController < ApplicationController
     end
 
     def title
-      @form.opponent ? "All Games between #{@form.player.name} and #{@form.opponent.name}" : "All Maps"
+      @form.opponent ? "#{@form.player.name} against #{@form.opponent.name}" : "All Maps"
     end
 
     def categories
@@ -114,7 +115,7 @@ class ChartsController < ApplicationController
     end
 
     def title
-      "Elo Delta for " + (@form.opponent ? "games between #{@form.player.name} and #{@form.opponent.name}" : "All Maps")
+      "Elo Delta for " + (@form.opponent ? "#{@form.player.name} against #{@form.opponent.name}" : "All Maps")
     end
 
     def categories
