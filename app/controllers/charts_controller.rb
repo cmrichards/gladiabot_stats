@@ -91,6 +91,7 @@ class ChartsController < ApplicationController
               select("date_trunc('day', resolution_time) date, sum(game_players.elo_delta) elo_delta, count(games.id) no_games").
               joins(:game_players).
               where(mission_id: form.selected_missions.map(&:id), game_players: { player_id: form.player.id }).
+              where(resolution_time: form.date_range).
               group("date_trunc('day', resolution_time)")
       if form.opponent
         games = games.joins("inner join game_players opponent_game_player on opponent_game_player.game_id = games.id").
