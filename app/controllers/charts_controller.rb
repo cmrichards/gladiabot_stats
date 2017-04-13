@@ -10,7 +10,8 @@ class ChartsController < ApplicationController
       @stacked_map_chart_elo_delta  = StackedMapChartEloDelta.new(@form, @individual_map_stats)
       @lost_and_drawn_games = Game.lost_or_drawn(@form.player.id).
                                    where(mission_id: @form.selected_missions.map(&:id)).
-                                   where(resolution_time: @form.date_range)
+                                   where(resolution_time: @form.date_range).
+                                   order("resolution_time desc")
 
       # Create 'Top X played against' and 'Top X Elo Delta' charts
       player_stats  = PlayerStat.create_player_stats(@form)
@@ -256,7 +257,7 @@ class ChartsController < ApplicationController
         "SELECT 
           opponent_game_player.player_id opponent_id,
           opponent.name opponent_name,
-          sum(CASE WHEN games.player_id=118911 THEN 1 else 0 END) win,
+          sum(CASE WHEN games.player_id=:player_id THEN 1 else 0 END) win,
           sum(CASE WHEN games.draw=0 and games.player_id!=:player_id THEN 1 else 0 END) lose,
           SUM(games.draw) draw,
           SUM(game_players.elo_delta) elo_delta,
