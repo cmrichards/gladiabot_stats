@@ -11,9 +11,7 @@ class ChartsController < ApplicationController
       @lost_and_drawn_games = Game.lost_or_drawn(@form.player.id, @form.opponent.try(:id)).
                                    where(mission_id: @form.selected_missions.map(&:id)).
                                    where(resolution_time: @form.date_range).
-                                   order("resolution_time desc")
-      @lost_and_drawn_agains = @lost_and_drawn_agains
-
+                                   order("resolution_time desc")     
       # Create 'Top X played against' and 'Top X Elo Delta' charts
       player_stats  = PlayerStat.create_player_stats(@form)
       @stacked_players_chart = StackedPlayerGamesChart.new(@form, player_stats)
