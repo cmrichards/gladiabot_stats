@@ -19,7 +19,7 @@ class ChartsController < ApplicationController
       # Create 'Top X played against' and 'Top X Elo Delta' charts
       player_stats  = PlayerStat.create_player_stats(@form)
       @stacked_players_chart = StackedPlayerGamesChart.new(@form, player_stats)
-      @stacked_players_elo_delta_chart = StackedPlayerEloDeltaChart.new(@form, player_stats, number_of_players: 50)
+      @elo_delta_chart = StackedPlayerEloDeltaChart.new(@form, player_stats, number_of_players: 50)
     end
   end
 
@@ -239,8 +239,9 @@ class ChartsController < ApplicationController
     def initialize(form, player_stats, number_of_players: 30)
       @number_of_players = number_of_players
       @form = form
-      @stats = player_stats.sort_by{ |ps| ps.elo_delta.abs }.
-                            reverse[0..(@number_of_players - 1)]
+      @stats = player_stats.partition{ |ps| ps.elo_delta < 0 }.
+                            map{ |stats| stats.sort_by{ |ps| ps.elo_delta.abs }.reverse[0..(@number_of_players/2-1)] }.
+                            inject(&:+)
       @opponents = @stats.map(&:opponent)
     end
 
