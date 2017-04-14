@@ -18,6 +18,12 @@ body {
     margin-top: 10px;
 }
 
+ul.errors li {
+    color: red;
+    font-size: 10pt;
+}
+
+
 .flexContainer {
     display: flex;
     flex-wrap: wrap;

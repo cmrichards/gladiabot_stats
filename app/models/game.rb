@@ -3,6 +3,8 @@ class Game < ApplicationRecord
   belongs_to :mission, required: false
   has_many :game_players, dependent: :destroy
 
+  scope :by_resolution_time, -> { order("resolution_time desc") }
+
   def draw?
     draw == 1
   end

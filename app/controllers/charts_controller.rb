@@ -7,7 +7,7 @@ class ChartsController < ApplicationController
     if params[:form] && @form.valid?
 
       elo_dates = EloDate.create_elo_dates(@form)
-      @elo_change_line_chart = EloChangeLineChart.new(elo_dates)
+      @elo_change_line_chart = EloChangeLineChart.new(@form, elo_dates)
 
       @individual_map_stats = MapStat.create_map_stats(@form)
       @stacked_map_chart    = StackedMapChart.new(@form, @individual_map_stats)
@@ -15,7 +15,7 @@ class ChartsController < ApplicationController
       @lost_and_drawn_games = Game.lost_or_drawn(@form.player.id, @form.opponent.try(:id)).
                                    where(mission_id: @form.selected_missions.map(&:id)).
                                    where(resolution_time: @form.date_range).
-                                   order("resolution_time desc")     
+                                   by_resolution_time
       # Create 'Top X played against' and 'Top X Elo Delta' charts
       player_stats  = PlayerStat.create_player_stats(@form)
       @stacked_players_chart = StackedPlayerGamesChart.new(@form, player_stats)
@@ -69,14 +69,27 @@ class ChartsController < ApplicationController
     private
 
     def check_players_names
-      errors.add(:player_name, "does not exist") if player.blank?
-      errors.add(:opponent_player_name, "does not exist") if opponent_player_name.present? && opponent.blank?
+      errors.add(:player_name, similar_name_message(player_name)) if player.blank?
+      errors.add(:opponent_player_name, similar_name_message(opponent_player_name)) if opponent_player_name.present? &&
+                                                                                       opponent.blank?
     end
 
     def check_dates
       errors.add(:start_date, "is not a valid date") unless start_date.is_a?(Date)
       errors.add(:end_date, "is not a valid date") unless end_date.is_a?(Date)
       errors.add(:end_date, "is before the end date") if start_date.is_a?(Date) && end_date.is_a?(Date) && end_date < start_date
+    end
+
+    def similar_name_message(name)
+      message = "does not exist."
+      if name.present?
+        similar_players = Player.similar_to(name).limit(50).by_name.to_a || Player.similar_to(name.split.first).by_name.limit(50).to_a
+        if similar_players.any?
+          message << " These similar players exist: "
+          message << similar_players.map(&:name).join(", ")
+        end
+      end
+      message
     end
   end
 
@@ -113,12 +126,13 @@ class ChartsController < ApplicationController
 
   class EloChangeLineChart
 
-    def initialize(elo_dates)
+    def initialize(form, elo_dates)
+      @form = form
       @elo_dates = elo_dates.sort_by(&:date)
     end
 
     def title
-      "Daily Elo Delta"
+      @form.opponent ? "Daily Elo Delta against #{@form.opponent.name}" : "Daily Elo Delta" 
     end
 
     def y_axis_title

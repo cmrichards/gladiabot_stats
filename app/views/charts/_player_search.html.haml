@@ -5,9 +5,25 @@
       format: 'DD MMM YYYY'
     });
   }
+
+  var options = {
+    url: function(name) { return "/players.json?name="+name; } ,
+    getValue: "name",
+    requestDelay: 300,
+    list: {
+      match: {
+        enabled: true
+      }
+    },
+    theme: "square"
+  };
+
   $(function() {
     addDatePicker('date-from');
     addDatePicker('date-to');
+    $("#player_name").easyAutocomplete(options);
+    $("#opponent_player_name").easyAutocomplete(options);
+    $(".easy-autocomplete").prop("style", "");
   });
 
 - if Game.exists?
@@ -19,26 +35,28 @@
 
 = form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form"} do |f|
   .row
-    .col-2
+    .col-lg
       .form-group
         %label.tiny Player Name
         = f.text_field :player_name, placeholder: "Enter player name", class: "form-control mb-2 mr-sm-2 mb-sm-0",
-          required: true
-    .col-2
+          required: true, id: "player_name"
+    .col-lg
       .form-group
         %label.tiny Opponent Name
-        = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control mb-2 mr-sm-2 mb-sm-0"
-    .col-2
+        = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control mb-2 mr-sm-2 mb-sm-0",
+          id: "opponent_player_name"
+
+    .col-lg
       .form-group
         %label.tiny Date From
         = f.text_field :start_date, class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-from",
           value: (form.start_date && form.start_date.strftime("%d %b %Y"))
-    .col-2
+    .col-lg
       .form-group
         %label.tiny Date To
         = f.text_field :end_date,   class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-to",
           value: (form.end_date && form.end_date.strftime("%d %b %Y"))
-    .col-2
+    .col-lg
       .form-group
         %label.tiny &nbsp;
         %br/
@@ -58,7 +76,7 @@
 
 - if form.errors.any?
   %p{:style=>"margin-top: 20px;"}
-    There are issues with this form:
-  %ul
+    There are ssues with this form:
+  %ul.errors
     - form.errors.full_messages.each do |message|
       %li= message
