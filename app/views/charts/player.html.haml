@@ -28,7 +28,8 @@
         = render "games", games: @lost_and_drawn_games, main_player_id: @form.player.id
 
     .half.flexContainer
-      = render "time_line_chart", chart: @elo_change_line_chart, height: 200, legend: false
+      = render "time_line_chart", chart: @elo_change_line_chart, height: 200, legend: false, type: "area"
+      = render "time_line_chart", chart: @player_elo_chart, height: 200, legend: @form.opponent.present?
       - if @elo_range_chart
         = render "elo_range_line_chart", chart: @elo_range_chart
       .half

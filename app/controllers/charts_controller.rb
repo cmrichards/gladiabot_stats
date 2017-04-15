@@ -9,8 +9,13 @@ class ChartsController < ApplicationController
       if @form.opponent.blank?
         elo_range_successes = EloRangeSuccess.create_elo_ranges(@form)
         @elo_range_chart = EloRangeSuccessChart.new(@form, elo_range_successes)
-  
       end
+
+      # Show elo change over time (and opponent's if selected)
+      player_elos = PlayerElo.create_player_elos(player_ids: [@form.player.id, @form.opponent.try(:id)].compact,
+                                                 start_date: @form.date_range.first,
+                                                 end_date:   @form.date_range.last )
+      @player_elo_chart = PlayerEloChart.new(player_elos)
 
       elo_dates = EloDate.create_elo_dates(@form)
       @elo_change_line_chart = EloChangeLineChart.new(@form, elo_dates)
@@ -110,7 +115,7 @@ class ChartsController < ApplicationController
     end
 
     def title
-      "Player Elos"
+      "Historical Player Elo"
     end
 
     def y_axis_title
@@ -138,17 +143,18 @@ class ChartsController < ApplicationController
                     :elo_delta
     end
 
-    def self.create_player_elos
-      top_player_ids = Game.find_by_sql("
-        select 
-        game_players.player_id
-        from games
-        inner join game_players on game_players.game_id = games.id
-        where
-        resolution_time > now() - interval '7 days'
-        group by game_players.player_id
-        order by max(game_players.current_elo) desc
-        limit 20").map(&:player_id)
+    def self.create_player_elos(player_ids: nil, start_date: Time.now - 3.weeks, end_date: Time.now)
+      player_ids = player_ids || Game.find_by_sql("
+        select with_max_id.player_id
+        from
+          (select player_id, max(id) max_id, count(id) no_of_games
+          from game_players
+          group by player_id) with_max_id
+        inner join game_players on game_players.id = max_id
+        where with_max_id.no_of_games > 2
+        order by current_elo desc
+        limit 20
+        ").map(&:player_id)
 
       sql =[
         "SELECT
@@ -162,12 +168,12 @@ class ChartsController < ApplicationController
           inner join game_players on game_players.game_id = games.id
           left outer join players on players.id = game_players.player_id
         WHERE
-          games.resolution_time > :start_time
+          games.resolution_time between :start_time and :end_time
           and game_players.player_id in (:player_ids)
         ",
         {
-          start_time: Time.now - 3.weeks,
-          player_ids: top_player_ids
+          start_time: start_date, end_time: end_date,
+          player_ids: player_ids
         }
       ]
       Game.find_by_sql(sql).

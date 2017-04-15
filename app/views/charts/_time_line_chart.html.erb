@@ -4,7 +4,7 @@
 <script>
 Highcharts.chart('<%= chart.object_id %>', {
     chart: {
-        type: 'spline'
+        type: '<%= defined?(type) ? type : "spline"%>'
     },
     title: {
         text: '<%= chart.title %>',
