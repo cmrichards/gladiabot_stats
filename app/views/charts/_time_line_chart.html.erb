@@ -1,10 +1,10 @@
-<div style="width: 100%; min-height: 200px;" id="<%= chart.object_id %>" >
+<div style="width: 100%; min-height: <%=height%>px;" id="<%= chart.object_id %>" >
 </div>
 
 <script>
 Highcharts.chart('<%= chart.object_id %>', {
     chart: {
-        type: 'area'
+        type: 'spline'
     },
     title: {
         text: '<%= chart.title %>',
@@ -21,7 +21,12 @@ Highcharts.chart('<%= chart.object_id %>', {
         }
     },
     legend: {
-        enabled: false
+        enabled: <%= legend ? 'true' : 'false' %>,
+        align: "right",
+        layout:  "vertical",
+        verticalAlign: "top",
+        itemMarginTop: 5,
+        itemMarginBottom: 5
     },
     yAxis: {
         title: {
@@ -35,7 +40,7 @@ Highcharts.chart('<%= chart.object_id %>', {
     plotOptions: {
         spline: {
             marker: {
-                enabled: true
+                enabled: false
             }
         }
     },
@@ -44,7 +49,7 @@ Highcharts.chart('<%= chart.object_id %>', {
        {
            name: '<%= series[0] %>',
            data: [
-               <%= series[1].map{|e| "[Date.UTC(#{e.date.year},#{e.date.month-1},#{e.date.day}),#{e.elo_delta}]"}.join(", ")  %>
+               <%= raw series[1].map{|e| "[Date.UTC(#{e.date.year},#{e.date.month-1},#{e.date.day}),#{e.elo_delta}]"}.join(", ")  %>
            ]
        },
        <% end %>
