@@ -1,0 +1,52 @@
+<div style="width: 100%; min-height: 300px;" id="<%= chart.object_id %>" >
+</div>
+<script>
+Highcharts.chart('<%= chart.object_id %>', {
+
+     chart: {
+         type: "spline"
+         },
+
+
+     plotOptions: {
+         spline: {
+             marker: {
+                 enable: false
+             }
+         }
+     },
+
+    title: {
+        text: '<%=chart.title%>'
+    },
+
+    yAxis: {
+        title: {
+            text: '<%= chart.y_axis_title %>'
+        },
+        max: 100
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    xAxis: {
+        title: {
+            text: "Opponent Elo"
+            },
+        categories: [ <%=raw chart.categories.map{|c| "'#{c}'"}.join(", ") %>]
+    },
+    series: [
+        <% chart.series.each do |series| %>
+        {
+            name: '<%= series[0] %>',
+            data: [ <%= series[1].map(&:to_s).join(", ") %> ]
+        },
+        <% end %>
+    ]
+
+});
+
+</script>
