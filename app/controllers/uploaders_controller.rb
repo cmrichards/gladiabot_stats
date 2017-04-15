@@ -47,6 +47,8 @@ class UploadersController < ApplicationController
           next if game_id == "id" || Game.exists?(game_id)
 
           player_1_elo_delta = cols[11].to_i
+          player_1_elo = cols[5].to_i
+          player_2_elo = cols[6].to_i
           winner_id = case cols[10]
                       when "1" then cols[5]
                       when "0" then cols[6]
@@ -61,9 +63,9 @@ class UploadersController < ApplicationController
           end
 
           [
-            [cols[5], cols[8], player_1_elo_delta],
-            [cols[6], cols[7], -player_1_elo_delta]
-          ].each do |player_id, opponent_elo, elo_delta|
+            [cols[5], cols[8], player_1_elo_delta, player_1_elo],
+            [cols[6], cols[7], -player_1_elo_delta, player_2_elo]
+          ].each do |player_id, opponent_elo, elo_delta, current_elo|
             xp_gained = if player_id == winner_id
                         opponent_elo.to_f
                       elsif game.draw == 1
@@ -73,7 +75,8 @@ class UploadersController < ApplicationController
                       end
             game.game_players.create!(player_id: player_id,
                                       xp_gained: xp_gained,
-                                      elo_delta: elo_delta)
+                                      elo_delta: elo_delta,
+                                      current_elo: current_elo)
           end
         end
       end
