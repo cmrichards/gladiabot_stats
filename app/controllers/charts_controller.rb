@@ -144,17 +144,19 @@ class ChartsController < ApplicationController
     end
 
     def self.create_player_elos(player_ids: nil, start_date: Time.now - 3.weeks, end_date: Time.now)
-      player_ids = player_ids || Game.find_by_sql("
+      player_ids = player_ids || Game.find_by_sql(["
         select with_max_id.player_id
         from
           (select player_id, max(id) max_id, count(id) no_of_games
           from game_players
           group by player_id) with_max_id
         inner join game_players on game_players.id = max_id
+        inner join games on games.id = game_players.game_id
         where with_max_id.no_of_games > 2
+        and games.resolution_time > ?
         order by current_elo desc
         limit 20
-        ").map(&:player_id)
+        ", Time.now - 1.week]).map(&:player_id)
 
       sql =[
         "SELECT
