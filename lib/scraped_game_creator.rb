@@ -42,6 +42,7 @@ class ScrapedGameCreator
       @scraped_matches.
         select { |match| !Game.exists?(match.id) }.
         each { |match|
+        skip_game = false
         new_game = Game.new do |game|
           game.id = match.id
           game.mission = Mission.find_by(name: match.map_name)
@@ -51,7 +52,11 @@ class ScrapedGameCreator
             opponent_elo = match.players.find{ |p| p != player }.elo
             GamePlayer.new do |gp|
               existing_player = Player.with_name(player.name)
-              next if existing_player.nil? && skip_games_with_missing_players
+              if existing_player.nil? && skip_games_with_missing_players
+                # ugh
+                skip_game = true
+                break
+              end
               gp.player     = existing_player || Player.create!(name: player.name)
               game.player_id= gp.player.id if player.winner
               gp.current_elo= player.elo
@@ -66,7 +71,7 @@ class ScrapedGameCreator
             end
           }
         end
-        new_game.save!
+        new_game.save! unless skip_game
       }
     end
   end
