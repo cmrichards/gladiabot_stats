@@ -16,8 +16,8 @@ class ScrapedGameCreator
     if @scraped_matches.any?{ |m| m.id.blank? }
       @errors << "Some matches have no id"  
     else
-      matches = @scraped_matches.select{ |m| !m.time.between?(Time.now - 8.weeks, Time.now+1.hour) }
-      @errors << "These matches are not within last 8 weeks: #{matches.map(&:id).join(", ")}" if matches.any?
+      #matches = @scraped_matches.select{ |m| !m.time.between?(Time.now - 8.weeks, Time.now+1.hour) }
+      #@errors << "These matches are not within last 8 weeks: #{matches.map(&:id).join(", ")}" if matches.any?
       invalid_match_results = @scraped_matches.select{ |m|
         (m.draw && m.players.any?(&:winner) ) || (!m.draw && m.players.none?(&:winner) ) || m.players.all?(&:winner)
       }
