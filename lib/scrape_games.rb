@@ -33,7 +33,7 @@ class ScrapeGames
         m.id       = div.css("input").first["value"].to_i
         m.time     = Time.parse div.text[/\[(.*)\]/,1]
         div        = div.css("b").first || div
-        m.map_name = div.text[/\)\son\s(.*)$/,1].strip
+        m.map_name = div.text[/\)\son\s(.*)$/,1].gsub(/\[.*\]/, "").strip
         m.draw     = div.css("span.player.draw").present?
         m.players  = div.css("span.player,span.result").map do |player|
           ScrapedPlayer.new.tap do |p|
