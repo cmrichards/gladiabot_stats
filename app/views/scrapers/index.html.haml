@@ -1,0 +1,11 @@
+%h1 Scraper
+
+- if @errors && @errors.present?
+  %p
+    There were errors scraping that must be fixed:
+
+  %ul
+    - @errors.each do |error|
+      %li= error
+
+= button_to "Scrape", scrapers_url, method: :post, class: "btn btn-primary"

@@ -77,6 +77,8 @@ GEM
       haml (~> 4.0)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
     i18n (0.8.1)
     ice_nine (0.11.1)
     jbuilder (2.6.3)
@@ -101,6 +103,7 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     multi_json (1.12.1)
+    multi_xml (0.5.5)
     nio4r (2.0.0)
     nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
@@ -191,9 +194,11 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   haml-rails (~> 0.9)
+  httparty
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
+  nokogiri
   pg
   puma (~> 3.0)
   rails (~> 5.0.2)

@@ -1,7 +1,14 @@
 .search_box
   = render "player_search", form: @form
 
+
 - if @stacked_map_chart
+
+  %div{style: "width: 300px; margin: 0 auto;"}
+    = button_to "Fetch recent #{@form.player.name} Games from Gladiabots Server", scrapers_url(player_name: @form.player_name),
+              method: :post, class: "btn btn-primary btn-sm",
+              data: { disable_with: "Please wait while data is fetched..."}
+
   .flexContainer
     .half
       = render "stacked_bar_chart", chart: @stacked_map_chart

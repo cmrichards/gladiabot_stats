@@ -51,8 +51,8 @@ class ChartsController < ApplicationController
 
     attribute :player_name
     attribute :opponent_player_name # optional
-    attribute :start_date,  Date, default: Time.now - 2.weeks
-    attribute :end_date,    Date, default: Time.now
+    attribute :start_date,  Date, default: ->(form, attribute) { Time.now - 2.weeks }
+    attribute :end_date,    Date, default: ->(form, attribute) { Time.now }
     attribute :mission_ids, Array[Integer]
 
     validates :player_name, :start_date, :end_date, presence: true
@@ -72,7 +72,7 @@ class ChartsController < ApplicationController
     end
 
     def selected_missions
-      @sm ||= Mission.find(mission_ids)
+      @sm ||= mission_ids.blank? ? Mission.all : Mission.find(mission_ids)
     end
 
     def available_missions
