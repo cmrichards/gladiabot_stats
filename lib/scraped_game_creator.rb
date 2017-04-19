@@ -33,8 +33,8 @@ class ScrapedGameCreator
   end
 
   # skip_games_with_missing_players: If set to true, then games with unknown players
-  # will be ignored.  Use this if the player dump should be the only source of
-  # new players
+  # will be ignored.  Use this if the player dump csv should be the only source of
+  # new players.  The wrong ids would be created for new players if this wasn't set.
 
   def create_games!(skip_games_with_missing_players: true)
     raise "Errors exist" if !valid?
