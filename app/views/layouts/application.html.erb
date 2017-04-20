@@ -32,6 +32,32 @@
         <%= yield %>
     </div>
 
+    <script>
+     toastr.options = {
+         "closeButton": false,
+         "debug": false,
+         "newestOnTop": false,
+         "progressBar": true,
+         "positionClass": "toast-top-right",
+         "preventDuplicates": false,
+         "onclick": null,
+         "showDuration": "300",
+         "hideDuration": "1000",
+         "timeOut": "5000",
+         "extendedTimeOut": "1000",
+         "showEasing": "swing",
+         "hideEasing": "linear",
+         "showMethod": "fadeIn",
+         "hideMethod": "fadeOut"
+     }
+     <% if flash[:notice].present? %>
+        toastr["success"]("", "<%=flash[:notice]%>")
+     <% end %>
+     <% if flash[:alert].present? %>
+        toastr["error"]("", "<%=flash[:alert]%>")
+     <% end %>
+    </script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>

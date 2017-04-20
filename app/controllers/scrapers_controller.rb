@@ -15,9 +15,10 @@ class ScrapersController < ApplicationController
     if game_creator.valid?
       game_creator.create_games!(skip_games_with_missing_players: true)
       if params[:player_name].present?
-        redirect_to player_charts_url(form: { player_name: params[:player_name] })
+        redirect_to player_charts_url(form: { player_name: params[:player_name] }),
+                    notice: "Recent game data for #{params[:player_name]} was loaded."
       else
-        render text: "Scraping successfull", layout: false
+        redirect_to player_charts_url, notice: "Recent league data was loaded."
       end
     else
       @errors = game_creator.errors

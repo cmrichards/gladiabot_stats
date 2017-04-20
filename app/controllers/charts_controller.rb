@@ -260,9 +260,9 @@ class ChartsController < ApplicationController
 
     def series
       [
-        ["Win", @elo_range_successes.map(&:win_percentage)],
+        ["Draw", @elo_range_successes.map(&:draw_percentage)],
         ["Lose", @elo_range_successes.map(&:lost_percentage)],
-        ["Draw", @elo_range_successes.map(&:draw_percentage)]
+        ["Win", @elo_range_successes.map(&:win_percentage)]
       ]
     end
   end
