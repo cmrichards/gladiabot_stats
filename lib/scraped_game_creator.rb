@@ -55,7 +55,7 @@ class ScrapedGameCreator
               if existing_player.nil? && skip_games_with_missing_players
                 # ugh
                 skip_game = true
-                break
+                next
               end
               gp.player     = existing_player || Player.create!(name: player.name)
               game.player_id= gp.player.id if player.winner

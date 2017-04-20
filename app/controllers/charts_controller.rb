@@ -51,7 +51,7 @@ class ChartsController < ApplicationController
 
     attribute :player_name
     attribute :opponent_player_name # optional
-    attribute :start_date,  Date, default: ->(form, attribute) { Time.now - 2.weeks }
+    attribute :start_date,  Date, default: ->(form, attribute) { Time.now - 5.days }
     attribute :end_date,    Date, default: ->(form, attribute) { Time.now }
     attribute :mission_ids, Array[Integer]
 
