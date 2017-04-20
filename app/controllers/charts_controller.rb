@@ -4,7 +4,9 @@ class ChartsController < ApplicationController
 
   def player
     @form = PlayerForm.new params[:form]
-    if params[:form] && @form.valid?
+    @form.player_name = params[:player_name] if params[:player_name].present?
+    @form.opponent_player_name = params[:opponent_player_name] if params[:opponent_player_name].present?
+    if @form.player_name.present? && @form.valid?
 
       if @form.opponent.blank?
         elo_range_successes = EloRangeSuccess.create_elo_ranges(@form)

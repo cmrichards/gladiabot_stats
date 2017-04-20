@@ -17,5 +17,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get ":player_name", to: "charts#player"
+  get ":player_name/vs/:opponent_player_name", to: "charts#player"
+
   root "charts#player"
 end
