@@ -2,7 +2,7 @@
 
 **Gladiabots Stats**
 
-A ruby on rails application that can parse Gladiabots player and game dump files and generate graphs
+A ruby on rails application that can parse Gladiabots player/game dump files and scrape the official stats site for realtime data in order to generate pretty graphs.
 
 It runs here: http://gladiabots-stats.info.tm
 
