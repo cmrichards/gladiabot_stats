@@ -20,5 +20,5 @@ Rails.application.routes.draw do
   get ":player_name", to: "charts#player"
   get ":player_name/vs/:opponent_player_name", to: "charts#player"
 
-  root "charts#player"
+  root "charts#index"
 end

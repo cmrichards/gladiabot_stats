@@ -33,7 +33,7 @@
     and
     #{Game.maximum(:resolution_time).to_s(:long)}
 
-= form_for form, :as=>:form, :url=>player_charts_url, method: :get, html: {class: "form"} do |f|
+= form_with model: form, :scope=>:form, :url=>player_charts_url, method: :get, class: "form" do |f|
   .row
     .col-lg
       .form-group

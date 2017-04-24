@@ -18,6 +18,28 @@ body {
     margin-top: 10px;
 }
 
+/** orange ff5836 **/
+
+body.black {
+    background-color: black;
+}
+
+body.black h1 {
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-size: 20pt;
+}
+
+body.black .card {
+    border: 5px solid #ff5836;
+}
+
+body.black .btn-primary {
+    background-color: #3a4b4b;
+    border-color: #3a4b4b;
+}
+
 ul.errors li {
     color: red;
     font-size: 10pt;
@@ -61,7 +83,6 @@ label.map {
 
 .search_box {
     padding: 20px;
-    margin-top: 10px;
     margin-bottom: 20px;
     border: 1px solid #DDD;
     background-color: #EFEFEF;

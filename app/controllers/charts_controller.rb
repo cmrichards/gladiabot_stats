@@ -1,5 +1,9 @@
 class ChartsController < ApplicationController
 
+  def index
+    render layout: "fullwidth"
+  end
+
   # GET /charts/player
 
   def player

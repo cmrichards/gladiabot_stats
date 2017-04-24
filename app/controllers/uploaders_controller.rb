@@ -8,8 +8,8 @@ class UploadersController < ApplicationController
   # Ignore header row and rows with no names
 
   def add_players
-    if params[:code] != "GLAD"
-      render text: "You must enter the admin code"
+    if Rails.env.production? && params[:code] != Rails.application.secrets.admin_code
+      render plain: "You must enter the admin code"
       return
     end
 
@@ -28,12 +28,12 @@ class UploadersController < ApplicationController
         end
       end
     end
-    render text: "Players were added/updated", layout: false
+    render plain: "Players were added/updated"
   end
 
   def add_games
-    if params[:code] != "GLAD"
-      render text: "You must enter the admin code"
+    if Rails.env.production? && params[:code] != Rails.application.secrets.admin_code
+      render plain: "You must enter the admin code"
       return
     end
 
@@ -87,13 +87,13 @@ class UploadersController < ApplicationController
 	      #Game.where("resolution_time < ?", earliest_allowed).destroy_all
       #end
     end
-    render text: "Games were added", layout: false
+    render plain: "Games were added"
   end
 
   private
 
   def no_file_error
-    render text: "You didn't select a file!", layout: false
+    render plain: "You didn't select a file!"
   end
 
   class MissingFile < StandardError ; end
