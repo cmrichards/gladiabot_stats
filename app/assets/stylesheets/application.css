@@ -33,11 +33,18 @@ body.black h1 {
 
 body.black .card {
     border: 5px solid #ff5836;
+    width: 30%;
+    margin-right: 3%;
 }
 
 body.black .btn-primary {
     background-color: #3a4b4b;
     border-color: #3a4b4b;
+}
+
+body.black .btn-primary:hover {
+    color: #3a4b4b;
+    background-color: white;
 }
 
 ul.errors li {
