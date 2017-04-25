@@ -27,8 +27,11 @@ class ScrapeGames
 
   def fetch_matches(url, params)
     response = HTTParty.get(url, query: params)
-    parsed_html = Nokogiri::HTML(response)
-    parsed_html.css("div.match").map do |div|
+    parse_html Nokogiri::HTML(response), params
+  end
+
+  def parse_html(html, params)
+    html.css("div.match").map do |div|
       ScrapedMatch.new.tap do |m|
         m.id       = div.css("input").first["value"].to_i
         m.time     = Time.parse div.text[/\[(.*)\]/,1]
@@ -38,7 +41,7 @@ class ScrapeGames
         m.players  = div.css("span.player,span.result").map do |player|
           ScrapedPlayer.new.tap do |p|
             p.winner    = player["class"][/victory/].present?
-            p.elo       = player.text[/(\d+)\s((\+|\-)||0)/,1]
+            p.elo       = player.text[/(\d+)\s((\+|\-)|0)/,1]
             p.elo_delta = player.text[/((\+|\-)\d+|\s0)/].to_i
             p.name = if link = player.css("a").first
                        link.text

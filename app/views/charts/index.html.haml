@@ -1,44 +1,44 @@
+
+%h1.text-center{style: "margin-top: 30px;"}
+  [ UNOFFICIAL GLADIABOTS STATS - WORK IN PROGRESS]
+
 .row{style: "margin-top: 5vh;"}
   .col &nbsp;
-  %div{:style=>"width: 80%;"}
-    %h1.text-center [ UNOFFICIAL GLADIABOTS STATS - WORK IN PROGRESS]
+  %div{style: "width: 80%; max-width: 1024px;"}
     .row
-      .col.d-flex
-        .card.justify-content-between
-          %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("map_charts.png")}); height: 160px; background-position: center; background-size:cover; "} 
-          .card-block
-            %h4 Player Stats
-            %p.card-text
-              Stats for individual players, or against specific players
-          %ul.list-group.list-group-flush
-            %li.list-group-item See where you lose the most points
-            %li.list-group-item See which players hurt you the most
-            %li.list-group-item See which maps you lose most points on
-          .card-block{style: "max-height: 80px;"}
-            = link_to "View", player_charts_url, class: "btn btn-primary"
-      .col.d-flex
-        .card.justify-content-between{style: "width: 100%;"}
-          %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("historical_elo.png")}); height: 160px; background-position: center; background-size:cover; "} 
-          .card-block
-            %h4 Global Stats
-            %p.card-text
-              Statistics for all players players.  
-          %ul.list-group.list-group-flush
-            %li.list-group-item Historical Elo Chart
-          .card-block{style: "max-height: 80px;"}
-            = link_to "View", player_charts_url, class: "btn btn-primary"
-      .col.d-flex.flex-column
-        .card.justify-content-between
-          %img.card-img-top.hidden-md-down{style: "height: 160px; background-position: center; background-size:cover; "} 
-          .card-block
-            %h4 Unavoidable Tournaments
-            %p.card-text
-              Pier's selection of tailored tournaments:
-          %ul.list-group.list-group-flush
-            %li.list-group-item Direct Fights
-            %li.list-group-item XP Gains
-            %li.list-group-item Average score
-            %li.list-group-item Streaks
-          .card-block{style: "max-height: 80px;"}
-            COMING SOON
+      .card.justify-content-between
+        %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("map_charts.png")}); height: 160px; background-position: center; background-size:cover; "} 
+        .card-block
+          %h4 Player Stats
+          %p.card-text
+            Stats for individual players, or against specific players
+        %ul.list-group.list-group-flush
+          %li.list-group-item See where you lose the most points
+          %li.list-group-item See which players hurt you the most
+          %li.list-group-item See which maps you lose most points on
+        .card-block{style: "max-height: 80px;"}
+          = link_to "View", player_charts_url, class: "btn btn-primary"
+      .card.justify-content-between
+        %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("historical_elo.png")}); height: 160px; background-position: center; background-size:cover; "} 
+        .card-block
+          %h4 Global Stats
+          %p.card-text
+            Statistics for all players players.  
+        %ul.list-group.list-group-flush
+          %li.list-group-item Historical Elo Chart
+        .card-block{style: "max-height: 80px;"}
+          = link_to "View", player_charts_url, class: "btn btn-primary"
+      .card.justify-content-between
+        %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("tournament.jpg")}); height: 160px; background-position: left; background-size:cover; "} 
+        .card-block
+          %h4 Unavoidable Tournaments
+          %p.card-text
+            Pier's selection of tailored tournaments:
+        %ul.list-group.list-group-flush
+          %li.list-group-item Direct Fights
+          %li.list-group-item XP Gains
+          %li.list-group-item Average score
+          %li.list-group-item Streaks
+        .card-block{style: "max-height: 80px;"}
+          COMING SOON
   .col &nbsp;
