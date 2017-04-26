@@ -1,4 +1,6 @@
-= render "player_search", form: @form
+- content_for :sidebar do
+  = render "player_search", form: @form
 
+= render "tabs"
 - if @player_charts
   = render "player_charts", form: @form, player_charts: @player_charts

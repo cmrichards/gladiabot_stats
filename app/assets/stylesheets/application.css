@@ -15,7 +15,11 @@
  */
 
 body {
-    margin-top: 10px;
+  min-height: 100vh;
+}
+
+.container-fluid {
+    min-height: 100vh;
 }
 
 /** orange ff5836 **/
@@ -31,6 +35,21 @@ body.black h1 {
     font-size: 20pt;
 }
 
+.nav-pills .nav-link.active {
+    color: #fff;
+    cursor: default;
+    background-color: #fa5836;
+    border: 1px solid #3a4b4b;
+}
+.nav-pills .nav-link {
+    color: #fff;
+    text-transform: uppercase;
+}
+.nav-pills .nav-link.active:hover {
+    color: #3a4b4b;
+    background-color: white;
+}
+
 body.black .card {
     border: 5px solid #ff5836;
     width: 30%;
@@ -40,6 +59,11 @@ body.black .card {
 body.black .btn-primary {
     background-color: #3a4b4b;
     border-color: #3a4b4b;
+}
+.btn-primary {
+    background-color: #ff5836;
+    border-color: #ff5836;
+    text-transform: uppercase;
 }
 
 body.black .btn-primary:hover {
@@ -90,9 +114,15 @@ label.map {
 
 .search_box {
     padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #DDD;
     background-color: #EFEFEF;
+    position: fixed;
+    min-height: 100vh;
+    width: 250px;
+}
+
+.nav-header {
+    background-color: #3a4b4b;
+    height: 60px;
 }
 
 .search_box p {
@@ -120,4 +150,62 @@ label.tiny {
     font-size: 10pt;
     font-weight: bold;
     margin-bottom: 0;
+}
+.effect1{
+    -webkit-box-shadow: 0 6px 3px -6px #777;
+       -moz-box-shadow: 0 6px 3px -6px #777;
+            box-shadow: 0 6px 3px -6px #777;
+}
+
+.effect2
+{
+  position: relative;
+}
+.effect2:before, .effect2:after
+{
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  top: 80%;
+  max-width:300px;
+  background: #777;
+  -webkit-box-shadow: 0 15px 10px #777;
+  -moz-box-shadow: 0 15px 10px #777;
+  box-shadow: 0 15px 10px #777;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -o-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
+.effect2:after
+{
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
+}
+
+.effect7
+{
+    position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+}
+.effect7:after
+{
+    right:10px;
+    left:auto;
+    -webkit-transform:skew(8deg) rotate(3deg);
+       -moz-transform:skew(8deg) rotate(3deg);
+        -ms-transform:skew(8deg) rotate(3deg);
+         -o-transform:skew(8deg) rotate(3deg);
+            transform:skew(8deg) rotate(3deg);
 }
