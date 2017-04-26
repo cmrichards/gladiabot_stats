@@ -1,16 +1,17 @@
-%table.table.table-sm.table-hover.games-table
-  %thead
-    %tr
-      %th Time
-      %th Replay ID
-      %th VS
-      %th Map
-      %th Elo Delta
-  %tbody
-    - games.each do |game|
-      %tr{class: (game.draw? ? "table-warning" : "table-danger")}
-        %td= game.resolution_time.to_s :long
-        %td= game.id
-        %td= game.opponent_name || game.opponent_id
-        %td= game.mission_name
-        %td= game.elo_delta
+%div{style: "max-width: 900px;"}
+  %table.table.table-sm.table-hover.games-table
+    %thead
+      %tr
+        %th Time
+        %th Replay ID
+        %th VS
+        %th Map
+        %th Elo Delta
+    %tbody
+      - games.each do |game|
+        %tr{class: (game.draw? && "table-warning" || game.winner?(main_player_id) && "" || "table-danger")}
+          %td= game.resolution_time.to_s :long
+          %td= game.id
+          %td= game.opponent_name || game.opponent_id
+          %td= game.mission_name
+          %td= game.elo_delta

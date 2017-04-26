@@ -1,0 +1,4 @@
+= render "player_search", form: @form
+- if @player_charts
+  = render "fetch_button", player_name: @form.player.name
+  = render "games", games: @player_charts.all_games, main_player_id: @form.player.id
