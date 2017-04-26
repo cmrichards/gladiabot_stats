@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :charts do
     collection do
       get "player"
+      get "player_games"
       get "global"
     end
   end

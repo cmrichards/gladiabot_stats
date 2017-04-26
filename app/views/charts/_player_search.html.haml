@@ -1,78 +1,55 @@
 :javascript
-  function addDatePicker(id) {
-    var picker = new Pikaday({
-      field: document.getElementById(id),
-      format: 'DD MMM YYYY'
-    });
-  }
-
-  var options = {
-    url: function(name) { return "/players.json?name="+name; } ,
-    getValue: "name",
-    requestDelay: 300,
-    list: {
-      match: {
-        enabled: true
-      }
-    },
-    theme: "square"
-  };
-
   $(function() {
-    addDatePicker('date-from');
-    addDatePicker('date-to');
-    $("#player_name").easyAutocomplete(options);
-    $("#opponent_player_name").easyAutocomplete(options);
-    $(".easy-autocomplete").prop("style", "");
-  });
+    $("#player_name").focus();
+  })
+.search_box
+  - if Game.exists?
+    %p.hidden-md-down
+      Data is available for games between:
+      #{Game.minimum(:resolution_time).to_s(:long)}
+      and
+      #{Game.maximum(:resolution_time).to_s(:long)}
 
-- if Game.exists?
-  %p
-    Data is available for games between:
-    #{Game.minimum(:resolution_time).to_s(:long)}
-    and
-    #{Game.maximum(:resolution_time).to_s(:long)}
+  = form_with model: form, :scope=>:form, :url=>url_for(), method: :get, class: "form" do |f|
+    .row
+      .col-lg
+        .form-group
+          %label.tiny.hidden-md-down Player Name
+          = f.text_field :player_name, placeholder: "Enter player name", class: "form-control mb-2 mr-sm-2 mb-sm-0",
+            id: "player_name",
+            required: true, id: "player_name"
+      .col-lg
+        .form-group
+          %label.tiny.hidden-md-down Opponent Name
+          = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control mb-2 mr-sm-2 mb-sm-0",
+            id: "opponent_player_name"
+      .col-lg
+        .form-group
+          %label.tiny.hidden-md-down Date From
+          = f.text_field :start_date, class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-from",
+            value: (form.start_date && form.start_date.strftime("%d %b %Y"))
+      .col-lg
+        .form-group
+          %label.tiny.hidden-md-down Date To
+          = f.text_field :end_date,   class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-to",
+            value: (form.end_date && form.end_date.strftime("%d %b %Y"))
+      .col-lg
+        .form-group
+          %label.tiny &nbsp;
+          %br/
+          = submit_tag "Search", class: "btn btn-primary"
 
-= form_with model: form, :scope=>:form, :url=>player_charts_url, method: :get, class: "form" do |f|
-  .row
-    .col-lg
-      .form-group
-        %label.tiny Player Name
-        = f.text_field :player_name, placeholder: "Enter player name", class: "form-control mb-2 mr-sm-2 mb-sm-0",
-          required: true, id: "player_name"
-    .col-lg
-      .form-group
-        %label.tiny Opponent Name
-        = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control mb-2 mr-sm-2 mb-sm-0",
-          id: "opponent_player_name"
+    .flexContainer.mapSelection
+      %label{:style=>"font-size: 80%;"}
+        = link_to "Select All", "#", onclick: "$('input.mission_select').prop('checked', true); return false;"
+        &nbsp;|&nbsp;
+        = link_to "Unselect All", "#", onclick: "$('input.mission_select').prop('checked', false); return false;"
 
-    .col-lg
-      .form-group
-        %label.tiny Date From
-        = f.text_field :start_date, class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-from",
-          value: (form.start_date && form.start_date.strftime("%d %b %Y"))
-    .col-lg
-      .form-group
-        %label.tiny Date To
-        = f.text_field :end_date,   class: "form-control mb-2 mr-sm-2 mb-sm-0", required: true, id: "date-to",
-          value: (form.end_date && form.end_date.strftime("%d %b %Y"))
-    .col-lg
-      .form-group
-        %label.tiny &nbsp;
-        %br/
-        = submit_tag "Show Stats", class: "btn btn-primary"
-
-  .flexContainer.mapSelection
-    %label{:style=>"font-size: 80%;"}
-      = link_to "Select All", "#", onclick: "$('input.mission_select').prop('checked', true); return false;"
-      &nbsp;|&nbsp;
-      = link_to "Unselect All", "#", onclick: "$('input.mission_select').prop('checked', false); return false;"
-
-    - form.available_missions.each do |mission|
-      %label.map
-        = check_box_tag "form[mission_ids][]", mission.id, form.mission_ids.blank? || form.mission_ids.include?(mission.id), class: "mission_select"
-        &nbsp;
-        = mission.name
+      - form.available_missions.each do |mission|
+        %label.map
+          = check_box_tag "form[mission_ids][]", mission.id, form.mission_ids.blank? || form.mission_ids.include?(mission.id), class: "mission_select"
+          &nbsp;
+          = mission.name
 
 - if form.errors.any?
   %p{:style=>"margin-top: 20px;"}
@@ -80,3 +57,9 @@
   %ul.errors
     - form.errors.full_messages.each do |message|
       %li= message
+
+%ul.nav.nav-tabs{style: "margin-bottom: 20px;"}
+  %li.nav-item
+    = link_to "Charts", player_charts_url(form: params[:form]), class: "nav-link #{'active' if action_name=='player'}" 
+  %li.nav-item
+    = link_to "Matches", player_games_charts_url(form: params[:form]), class: "nav-link #{'active' if action_name=='player_games'}" 

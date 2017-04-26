@@ -1,65 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Glad</title>
-    <%= csrf_meta_tags %>
+    <head>
+        <title>Glad</title>
+        <%= csrf_meta_tags %>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <%= stylesheet_link_tag    'application', media: 'all' %>
+        <%= javascript_include_tag 'application' %>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+    </head>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-  </head>
+    <body>
+        <div class="container-fluid">
+            <ul class="nav nav-pills" style="margin-bottom: 20px;">
+                <li class="nav-item">
+                    <%= link_to "Player Stats", player_charts_url, class: "nav-link #{'active' if action_name[/player/]}" %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to "Global Stats", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
+                </li>
+                <% if false %>
+                    <li class="nav-item">
+                        <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>
+                    </li>
+                <% end %>
+                <li class="nav-item">
+                </li>
+            </ul>
+            <%= yield %>
+        </div>
 
-  <body>
-    <div class="container-fluid">
-        <ul class="nav nav-tabs" style="margin-bottom: 20px;">
-            <li class="nav-item">
-                <%= link_to "Player Charts", player_charts_url, class: "nav-link #{'active' if action_name=='player'}" %>
-            </li>
-            <li class="nav-item">
-                <%= link_to "Global Charts", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
-            </li>
-            <% if false %>
-            <li class="nav-item">
-                <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>
-            </li>
-            <% end %>
-            <li class="nav-item">
-            </li>
-        </ul>
-        
-        <%= yield %>
-    </div>
-
-    <script>
-     toastr.options = {
-         "closeButton": false,
-         "debug": false,
-         "newestOnTop": false,
-         "progressBar": true,
-         "positionClass": "toast-top-right",
-         "preventDuplicates": false,
-         "onclick": null,
-         "showDuration": "300",
-         "hideDuration": "1000",
-         "timeOut": "5000",
-         "extendedTimeOut": "1000",
-         "showEasing": "swing",
-         "hideEasing": "linear",
-         "showMethod": "fadeIn",
-         "hideMethod": "fadeOut"
-     }
-     <% if flash[:notice].present? %>
-        toastr["success"]("", "<%=flash[:notice]%>")
-     <% end %>
-     <% if flash[:alert].present? %>
-        toastr["error"]("", "<%=flash[:alert]%>")
-     <% end %>
-    </script>
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-  </body>
+        <script>
+         <% if flash[:notice].present? %>
+         toastr["success"]("", "<%=flash[:notice]%>")
+         <% end %>
+         <% if flash[:alert].present? %>
+         toastr["error"]("", "<%=flash[:alert]%>")
+         <% end %>
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
 </html>
