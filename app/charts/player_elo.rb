@@ -41,7 +41,7 @@ class PlayerElo
         and game_players.player_id in (:player_ids)
       ",
       {
-        start_time: start_date, end_time: end_date,
+        start_time: start_date.at_beginning_of_day, end_time: end_date.end_of_day,
         player_ids: player_ids
       }
     ]
