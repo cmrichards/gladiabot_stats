@@ -1,7 +1,7 @@
 = render "fetch_button", player_name: form.player.name
 
-.flexContainer
-  .half
+.row
+  .col-md-6
     = render "stacked_bar_chart", chart: player_charts.stacked_map_chart
     = render "stacked_bar_chart", chart: player_charts.stacked_map_chart_elo_delta
     .flexContainer
@@ -20,13 +20,13 @@
           });
         });
     = render "games", games: player_charts.lost_and_drawn_games, main_player_id: form.player.id
-
-  .half.flexContainer
+  .col-md-6
     = render "time_line_chart", chart: player_charts.elo_change_line_chart, height: 200, legend: false, type: "area"
     = render "time_line_chart", chart: player_charts.player_elo_chart, height: 200, legend: form.opponent.present?
     - if player_charts.elo_range_chart
       = render "elo_range_line_chart", chart: player_charts.elo_range_chart
-    .half
-      = render "stacked_bar_chart", chart: player_charts.stacked_players_chart
-    .half
-      = render "stacked_bar_chart", chart: player_charts.elo_delta_chart
+    .row
+      .col-md-6
+        = render "stacked_bar_chart", chart: player_charts.stacked_players_chart
+      .col-md-6
+        = render "stacked_bar_chart", chart: player_charts.elo_delta_chart
