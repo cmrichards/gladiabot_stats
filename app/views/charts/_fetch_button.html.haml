@@ -1,4 +1,7 @@
 %div{style: "margin-bottom: 20px;"}
-  = button_to "Fetch latest #{player_name} Games from Gladiabots Server", scrapers_url(player_name: player_name),
+  = button_to scrapers_url(player_name: player_name),
             method: :post, class: "btn btn-primary btn-sm",
-            data: { disable_with: "Please wait while data is fetched..."}
+            data: { disable_with: "Please wait while data is fetched..."} do
+    %i.fa.fa-refresh &nbsp;
+    Fetch latest #{player_name} Games from Gladiabots Server
+  

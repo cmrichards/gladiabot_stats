@@ -1,10 +1,10 @@
-= render "fetch_button", player_name: form.player.name
+// = render "fetch_button", player_name: form.player.name
 
 .row
   .col-md-6
     = render "stacked_bar_chart", chart: player_charts.stacked_map_chart
     = render "stacked_bar_chart", chart: player_charts.stacked_map_chart_elo_delta
-    .flexContainer
+    .flexContainer.chart
       - player_charts.individual_map_stats.each do |map_stat|
         .item{data: { map_chart: true,
                       title: map_stat.title,
