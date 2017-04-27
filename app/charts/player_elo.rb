@@ -9,6 +9,7 @@ class PlayerElo
   end
 
   def self.create_player_elos(player_ids: nil, start_date: Time.now - 3.weeks, end_date: Time.now)
+    end_date = [Time.parse("16th April 2017"), end_date].max
     player_ids = player_ids || Game.find_by_sql(["
       select with_max_id.player_id
       from
