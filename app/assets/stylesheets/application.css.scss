@@ -1,0 +1,240 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+body {
+  min-height: 100vh;
+  background-color: #FDFDFD;
+}
+
+.chart {
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.container-fluid {
+    min-height: 100vh;
+}
+
+/** orange ff5836 **/
+
+body.black {
+    background-color: black;
+}
+
+body.black h1 {
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-size: 20pt;
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    cursor: default;
+    background-color: #fa5836;
+    border: 1px solid #3a4b4b;
+}
+.nav-pills .nav-link {
+    color: #fff;
+    text-transform: uppercase;
+}
+.nav-pills .nav-link.active:hover {
+    color: #3a4b4b;
+    background-color: white;
+}
+
+body.black .card {
+    border: 5px solid #ff5836;
+    width: 100%;
+    height: 100%;
+    margin-right: 3%;
+}
+
+body.black .btn-primary {
+    background-color: #3a4b4b;
+    border-color: #3a4b4b;
+}
+.btn-primary {
+    background-color: #ff5836;
+    border-color: #ff5836;
+    text-transform: uppercase;
+}
+
+body.black .btn-primary:hover {
+    color: #3a4b4b;
+    background-color: white;
+}
+
+ul.errors li {
+    color: red;
+    font-size: 10pt;
+}
+
+
+.flexContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+.item {
+    width: 140px;
+    min-width: 140px;
+    min-height: 185px;
+    margin: 0px;
+    margin-right: 10px;
+}
+
+.tableItem {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.half {
+    width: 50%;
+}
+
+.bigItem2 {
+    width: 25%;
+}
+
+.field_with_errors .form-control {
+    border: 2px solid red;
+}
+
+label.map {
+    font-size: 8pt;
+}
+
+.search_box {
+    padding: 20px;
+    background-color: #EFEFEF;
+}
+
+@media (min-width: 576px) {
+    .global {
+        display: none;
+    }
+}
+@media (min-width: 768px) {
+    .sidebar_col {
+        width: 200px;
+    }
+    .search_box {
+        position: fixed;
+        width: 200px;
+        min-height: 100vh;
+    }
+}
+
+@media (min-width: 992px) {
+    .sidebar_col {
+        width: 250px;
+    }
+    .search_box {
+        width: 250px;
+    }
+}
+
+.nav-header {
+    background-color: #3a4b4b;
+    height: 60px;
+}
+
+.search_box p {
+    font-size: 80%;
+    color: #888;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.mapSelection {
+    padding: 6px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.mapSelection label {
+    margin: 5px;
+}
+
+.games-table td, .games-table th {
+    font-size: 75%;
+}
+
+label.tiny {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+.effect1{
+    -webkit-box-shadow: 0 6px 3px -6px #777;
+       -moz-box-shadow: 0 6px 3px -6px #777;
+            box-shadow: 0 6px 3px -6px #777;
+}
+
+.effect2
+{
+  position: relative;
+}
+.effect2:before, .effect2:after
+{
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  top: 80%;
+  max-width:300px;
+  background: #999;
+  -webkit-box-shadow: 0 15px 5px #999;
+  -moz-box-shadow: 0 15px 5px #999;
+  box-shadow: 0 15px 5px #999;
+  -webkit-transform: rotate(-1deg);
+  -moz-transform: rotate(-1deg);
+  -o-transform: rotate(-1deg);
+  -ms-transform: rotate(-1deg);
+  transform: rotate(-1deg);
+}
+.effect2:after
+{
+  -webkit-transform: rotate(1deg);
+  -moz-transform: rotate(1deg);
+  -o-transform: rotate(1deg);
+  -ms-transform: rotate(1deg);
+  transform: rotate(1deg);
+  right: 10px;
+  left: auto;
+}
+
+.effect7
+{
+    position:relative;
+    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+            box-shadow:0 1px 4px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+}
+.effect7:after
+{
+    right:10px;
+    left:auto;
+    -webkit-transform:skew(8deg) rotate(3deg);
+       -moz-transform:skew(8deg) rotate(3deg);
+        -ms-transform:skew(8deg) rotate(3deg);
+         -o-transform:skew(8deg) rotate(3deg);
+            transform:skew(8deg) rotate(3deg);
+}

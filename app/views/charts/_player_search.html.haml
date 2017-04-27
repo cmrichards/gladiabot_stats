@@ -14,34 +14,36 @@
 
       = form_with model: form, :scope=>:form, :url=>( action_name[/global/] ? player_charts_url : url_for()), method: :get, class: "form" do |f|
         .row
-          .col-lg
+          .col
             .form-group
               %label.col-form-label.col-form-label-sm.hidden-md-down Player Name
               = f.text_field :player_name, placeholder: "Enter player name", class: "form-control form-control-sm player_autocomplete",
                 id: "player_name",
                 required: true, id: "player_name"
         .row
-          .col-lg
+          .col
             .form-group
               %label.col-form-label.col-form-label-sm.hidden-md-down Opponent Name
               = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control form-control-sm player_autocomplete",
                 id: "opponent_player_name"
         .row
-          .col-lg
+          .col
             .form-group
               %label.col-form-label.col-form-label-sm.hidden-md-down Date From
               = f.text_field :start_date, class: "form-control form-control-sm", required: true, id: "date-from",
                 value: (form.start_date && form.start_date.strftime("%d %b %Y"))
         .row
-          .col-lg
+          .col
             .form-group
               %label.col-form-label.col-form-label-sm.hidden-md-down Date To
               = f.text_field :end_date,   class: "form-control form-control-sm", required: true, id: "date-to",
                 value: (form.end_date && form.end_date.strftime("%d %b %Y"))
         .row
-          .col-lg
+          .col
             .form-group
-              = submit_tag "Search", class: "btn btn-primary btn-block btn-sm"
+              %button{type: "submit", class: "btn btn-primary btn-block btn-sm"}
+                %i.fa.fa-search
+                Search
 
         .flexContainer.mapSelection
           %label{:style=>"font-size: 80%;"}
@@ -54,6 +56,17 @@
               = check_box_tag "form[mission_ids][]", mission.id, form.mission_ids.blank? || form.mission_ids.include?(mission.id), class: "mission_select"
               &nbsp;
               = mission.name
+        .row.hidden-md-down{style: "margin-top: 20px;"}
+          .col
+            .card
+              .card-block
+                %p
+                  Chat with many other Gladiabots players here in this chatroom:
+                  %a{href: "https://t.me/gladiabots_fanbase", style: "font-size: 70%;"}
+                    https://t.me/gladiabots_fanbase
+
+
+
 - if form.errors.any?
   %p{:style=>"margin-top: 20px;"}
     There are ssues with this form:
