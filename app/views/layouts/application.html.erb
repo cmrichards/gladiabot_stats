@@ -31,16 +31,14 @@
                                         <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>
                                     </li>
                                 <% end %>
-                                <li class="nav-item">
-                                </li>
                             </ul>
-                            <div class="hidden-md-up <%=action_name%>" >
-                            <%= yield :sidebar%>
-                            </div>
                         </div>
                     </div>
                     <div style="margin-top: 70px" >
-                    <%= yield %>
+                        <div class="hidden-md-up <%=action_name%>" >
+                        <%= yield :sidebar%>
+                        </div>
+                        <%= yield %>
                     </div>
                 </div>
             </div>
