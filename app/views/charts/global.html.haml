@@ -1,3 +1,5 @@
+- content_for :sidebar do
+  = render "player_search", form: @form
 .row
   .col
     = render "time_line_chart", chart: @player_elo_chart, height: 700, legend: true

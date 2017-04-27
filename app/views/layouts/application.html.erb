@@ -12,22 +12,35 @@
 
     <body>
         <div class="container-fluid">
-            <ul class="nav nav-pills" style="margin-bottom: 20px;">
-                <li class="nav-item">
-                    <%= link_to "Player Stats", player_charts_url, class: "nav-link #{'active' if action_name[/player/]}" %>
-                </li>
-                <li class="nav-item">
-                    <%= link_to "Global Stats", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
-                </li>
-                <% if false %>
-                    <li class="nav-item">
-                        <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>
-                    </li>
-                <% end %>
-                <li class="nav-item">
-                </li>
-            </ul>
-            <%= yield %>
+            <div class="row" >
+                <div style="width: 250px;">
+                    <%= yield :sidebar%>
+                </div>
+                <div class="col">
+                    <div class="row" style="position: fixed; width: 100%;z-index: 1000; ">
+                        <div class="col nav-header">
+                            <ul class="nav nav-pills" style="padding-top: 10px; margin-bottom: 20px;">
+                                <li class="nav-item">
+                                    <%= link_to "Player Stats", player_charts_url, class: "nav-link #{'active' if action_name[/player/]}" %>
+                                </li>
+                                <li class="nav-item">
+                                    <%= link_to "Global Stats", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
+                                </li>
+                                <% if false %>
+                                    <li class="nav-item">
+                                        <%= link_to "Upload Data", uploaders_url, class: "nav-link #{'active' if controller_name=='uploaders'}" %>
+                                    </li>
+                                <% end %>
+                                <li class="nav-item">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 70px" >
+                    <%= yield %>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>
