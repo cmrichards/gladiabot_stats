@@ -1,10 +1,10 @@
-:javascript
-  $(function() {
-    $("#player_name").focus();
-  })
 .row
   .col
     .search_box
+      :javascript
+        $(function() {
+          $("#player_name").focus();
+        })
       - if false && Game.exists?
         %p.hidden-md-down
           Data is available for games between:
@@ -45,9 +45,9 @@
 
         .flexContainer.mapSelection
           %label{:style=>"font-size: 80%;"}
-            = link_to "Select All", "#", onclick: "$('input.mission_select').prop('checked', true); return false;"
+            = link_to "All", "#", onclick: "$('input.mission_select').prop('checked', true); return false;"
             &nbsp;|&nbsp;
-            = link_to "Unselect All", "#", onclick: "$('input.mission_select').prop('checked', false); return false;"
+            = link_to "None", "#", onclick: "$('input.mission_select').prop('checked', false); return false;"
 
           - form.available_missions.each do |mission|
             %label.map

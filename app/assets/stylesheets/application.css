@@ -115,9 +115,31 @@ label.map {
 .search_box {
     padding: 20px;
     background-color: #EFEFEF;
-    position: fixed;
-    min-height: 100vh;
-    width: 250px;
+}
+
+@media (min-width: 576px) {
+    .global {
+        display: none;
+    }
+}
+@media (min-width: 768px) {
+    .sidebar_col {
+        width: 200px;
+    }
+    .search_box {
+        position: fixed;
+        width: 200px;
+        min-height: 100vh;
+    }
+}
+
+@media (min-width: 992px) {
+    .sidebar_col {
+        width: 250px;
+    }
+    .search_box {
+        width: 250px;
+    }
 }
 
 .nav-header {
