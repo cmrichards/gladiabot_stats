@@ -34,11 +34,13 @@
                             </ul>
                         </div>
                     </div>
-                    <div style="margin-top: 70px" >
-                        <div class="hidden-md-up <%=action_name%>" >
-                        <%= yield :sidebar%>
+                    <div class="row" style="margin-top: 70px" >
+                        <div class="col">
+                            <div class="hidden-md-up <%=action_name%>" >
+                            <%= yield :sidebar%>
+                            </div>
+                            <%= yield %>
                         </div>
-                        <%= yield %>
                     </div>
                 </div>
             </div>
