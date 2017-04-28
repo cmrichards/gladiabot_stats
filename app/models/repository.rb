@@ -40,7 +40,7 @@ class Repository
   end
 
   def self.create_player_elos(player_ids: nil, start_date: Time.now - 3.weeks, end_date: Time.now, group_by_date: true)
-    end_date = [Time.parse("16th April 2017"), end_date].max
+    start_date = [Time.parse("16th April 2017"), start_date].max
 
     # Find top X players with highest scores
     player_ids = player_ids || Game.find_by_sql(["

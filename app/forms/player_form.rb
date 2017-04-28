@@ -25,7 +25,7 @@ class PlayerForm
   end
 
   def selected_missions
-    @sm ||= mission_ids.blank? ? Mission.all : Mission.find(mission_ids)
+    @sm ||= mission_ids.blank? ? available_missions : Mission.find(mission_ids)
   end
 
   def available_missions

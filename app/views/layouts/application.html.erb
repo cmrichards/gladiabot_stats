@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Glad</title>
+        <title>Unoffical Gladiabots Statistics</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="View players gladiabot statistics and charts">
+	<meta name="keywords" content="gladiabots,statistics,unofficial">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <%= csrf_meta_tags %>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -38,7 +41,7 @@
                     </div>
                     <div class="row" style="margin-top: 70px" >
                         <div class="col">
-                            <div class="hidden-md-up <%=action_name%>" >
+                            <div class="hidden-md-up <%=action_name%>" style="margin-bottom: 10px;">
                             <%= yield :sidebar%>
                             </div>
                             <%= yield %>

@@ -17,14 +17,14 @@
           .col
             .form-group
               %label.col-form-label.col-form-label-sm.hidden-md-down Player Name
-              = f.text_field :player_name, placeholder: "Enter player name", class: "form-control form-control-sm",
+              = f.text_field :player_name, placeholder: "Enter player name", class: "form-control form-control-sm player_autocomplete",
                 id: "player_name",
                 required: true, id: "player_name"
         .row
           .col
             .form-group
               %label.col-form-label.col-form-label-sm.hidden-md-down Opponent Name
-              = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control form-control-sm",
+              = f.text_field :opponent_player_name, placeholder: "*optional", class: "form-control form-control-sm player_autocomplete",
                 id: "opponent_player_name"
         .row
           .col
