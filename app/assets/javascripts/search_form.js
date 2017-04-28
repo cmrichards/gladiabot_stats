@@ -20,7 +20,7 @@ var options = {
 $(function() {
     addDatePicker('date-from');
     addDatePicker('date-to');
-    $("#player_name").easyAutocomplete(options);
-    $("#opponent_player_name").easyAutocomplete(options);
+    $(".player_autocomplete").easyAutocomplete(options);
+    $(".player_autocomplete").easyAutocomplete(options);
     $(".easy-autocomplete").prop("style", "");
 });

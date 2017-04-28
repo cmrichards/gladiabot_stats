@@ -1,5 +1,6 @@
 - content_for :sidebar do
   = render "player_search", form: @form
-= render "fetch_button", player_name: @form.player.name if @player_charts
+= render "fetch_button", player: @form.player if @player_charts
 = render "tabs"
-= render "games", games: @player_charts.all_games, main_player_id: @form.player.id if @player_charts
+%div{style: "max-width: 900px;"}
+  = render "games", games: @player_charts.all_games, main_player_id: @form.player.id if @player_charts

@@ -28,6 +28,10 @@ class Game < ApplicationRecord
     self.player_id == player_id
   end
 
+  def self.latest_resolution_time_for_player(player_id)
+    Game.joins(:game_players).
+      where(game_players: { player_id: player_id }).maximum(:resolution_time)
+  end
 
   def self.all_games(player_id, opponent_id=nil)
     games= Game.

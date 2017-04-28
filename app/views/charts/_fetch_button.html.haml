@@ -1,7 +1,11 @@
-%div{style: "margin-bottom: 20px;"}
-  = button_to scrapers_url(player_name: player_name),
+%div.d-flex{style: "margin-bottom: 20px; align-items: center;"}
+  = button_to scrapers_url(player_name: player.name),
             method: :post, class: "btn btn-primary btn-sm",
             data: { disable_with: "Please wait while data is fetched..."} do
     %i.fa.fa-refresh &nbsp;
-    Fetch latest #{player_name} Games from Gladiabots Server
+    Load latest #{player.name} Games 
+  - time = Game.latest_resolution_time_for_player(player.id)
+  - if time
+    %div.last_game.hidden-md-down{style: "margin-left: 20px;"}
+      Last available game for #{player.name} is at #{time.to_s(:long)}
   
