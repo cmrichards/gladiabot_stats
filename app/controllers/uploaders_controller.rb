@@ -1,25 +1,21 @@
 class UploadersController < ApplicationController
+  class IncorrectAdminCode < StandardError ; end
+
   require "csv"
+
+  rescue_from IncorrectAdminCode, with: :admin_code_error
+
+  before_action :check_admin_code, only: [:add_players, :add_games]
 
   def index
   end
 
-  # Multiple files can be selected at once in the form
-  # Ignore header row and rows with no names
-
   def add_players
-    if Rails.env.production? && params[:code] != Rails.application.secrets.admin_code
-      render plain: "You must enter the admin code"
-      return
-    end
-
     Player.transaction do
       Array(params[:file]).each do |file|
         CSV.parse(file.read).each do |cols|
           id, name = cols
-
           next if id == "id" || name.blank?
-
           if player = Player.find_by(id: id)
             player.update(name: name)
           else
@@ -32,11 +28,6 @@ class UploadersController < ApplicationController
   end
 
   def add_games
-    if Rails.env.production? && params[:code] != Rails.application.secrets.admin_code
-      render plain: "You must enter the admin code"
-      return
-    end
-
     Game.transaction do
       Array(params[:file]).each do |file|
         file = file.read.encode!(universal_newline: true) 
@@ -80,25 +71,18 @@ class UploadersController < ApplicationController
           end
         end
       end
-      # Delete games earlier than 21 days before the most recent game
-      # Deletes Game and associated GamePlayer records
-      #if false && Game.maximum(:resolution_time)
-	      #earliest_allowed = Game.maximum(:resolution_time) - (3*7).days
-	      #Game.where("resolution_time < ?", earliest_allowed).destroy_all
-      #end
     end
     render plain: "Games were added"
   end
 
   private
 
-  def no_file_error
-    render plain: "You didn't select a file!"
+  def check_admin_code!
+    raise IncorrectAdminCode if Rails.env.production? && params[:code] != Rails.application.secrets.admin_code
   end
 
-  class MissingFile < StandardError ; end
-
-  rescue_from MissingFile, with: :no_file_error
-
+  def admin_code_error
+    render plain: "You didn't enter the correct admin code"
+  end
 
 end

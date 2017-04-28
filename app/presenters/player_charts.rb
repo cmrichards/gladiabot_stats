@@ -17,25 +17,22 @@ class PlayerCharts
 
   def elo_range_chart
     return if @form.opponent.present?
-    @ert ||= EloRangeSuccessChart.new(@form,
-                                      EloRangeSuccess.create_elo_ranges(@form))
+    @ert ||= EloRangeSuccessChart.new(@form, Repository.create_elo_ranges(@form))
   end
 
   def player_elo_chart
     @pec ||= begin
       # Show elo change over time (and opponent's if selected)
-      player_elos = ::PlayerElo.create_player_elos(player_ids: [@form.player.id, @form.opponent.try(:id)].compact,
+      player_elos = Repository.create_player_elos(player_ids: [@form.player.id, @form.opponent.try(:id)].compact,
                                                   start_date: @form.date_range.first,
-                                                  end_date:   @form.date_range.last )
+                                                  end_date:   @form.date_range.last,
+                                                  group_by_date: false)
       PlayerEloChart.new(player_elos)
     end
   end
 
   def elo_change_line_chart
-    @eclc ||= begin
-      elo_dates = EloDate.create_elo_dates(@form)
-      EloChangeLineChart.new(@form, elo_dates)
-    end
+    @eclc ||= EloChangeLineChart.new(@form, Repository.create_elo_dates(@form))
   end
 
   def stacked_players_chart
@@ -43,11 +40,11 @@ class PlayerCharts
   end
 
   def elo_delta_chart
-    @edc = StackedPlayerEloDeltaChart.new(@form, player_stats, number_of_players: 50)
+    @edc ||= StackedPlayerEloDeltaChart.new(@form, player_stats, number_of_players: 50)
   end
 
   def individual_map_stats
-    @ims ||= MapStat.create_map_stats(@form)
+    @ims ||= Repository.create_map_stats(@form)
   end
 
   def stacked_map_chart
@@ -61,7 +58,7 @@ class PlayerCharts
   private
 
   def player_stats
-    @player_stats ||= PlayerStat.create_player_stats(@form)
+    @player_stats ||= Repository.create_player_stats(@form)
   end
 
 end
