@@ -7,6 +7,7 @@ class ChartsController < ApplicationController
   # GET /charts/player
   def player
     load_form
+    @top_players = Player.top_players(50) if @form.invalid?
   end
 
   # GET /charts/player_games

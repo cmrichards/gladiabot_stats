@@ -15,6 +15,22 @@ class Player < ApplicationRecord
     where(["upper(name) = upper(?)", name]).first
   end
 
+  def self.top_players(n)
+    sql = "select players.id, players.name, game_players.current_elo latest_elo
+          from players
+          inner join game_players on game_players.player_id = players.id
+          inner join games on games.id = game_players.game_id
+          where games.resolution_time = 
+          (
+          select max(resolution_time) 
+          from games
+          inner join game_players on game_players.game_id = games.id and game_players.player_id = players.id
+          )
+          order by current_elo desc
+          limit #{n}"
+    Player.find_by_sql(sql)
+  end
+
   def name
     super || "[id=#{self.id}]"
   end

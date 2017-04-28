@@ -1,5 +1,9 @@
 - content_for :sidebar do
   = render "player_search", form: @form
-= render "fetch_button", player: @form.player if @player_charts
-= render "tabs"
-= render "player_charts", form: @form, player_charts: @player_charts if @player_charts
+
+- if @player_charts
+  = render "fetch_button", player: @form.player
+  = render "tabs"
+  = render "player_charts", form: @form, player_charts: @player_charts
+- else
+  = render "top_players"

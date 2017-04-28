@@ -1,5 +1,5 @@
 %ul.nav.nav-tabs{style: "margin-bottom: 20px;"}
   %li.nav-item
-    = link_to "Charts", player_charts_url(form: params[:form]), class: "nav-link #{'active' if action_name=='player'}" 
+    = link_to "Charts", player_charts_url(form: params[:form], player_name: params[:player_name]), class: "nav-link #{'active' if action_name=='player'}" 
   %li.nav-item
-    = link_to "Matches", player_games_charts_url(form: params[:form]), class: "nav-link #{'active' if action_name=='player_games'}" 
+    = link_to "Matches", player_games_charts_url(form: params[:form], player_name: params[:player_name]), class: "nav-link #{'active' if action_name=='player_games'}" 
