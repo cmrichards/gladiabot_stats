@@ -16,19 +16,22 @@ class Player < ApplicationRecord
   end
 
   def self.top_players(n)
-    sql = "select players.id, players.name, game_players.current_elo latest_elo
-          from players
-          inner join game_players on game_players.player_id = players.id
-          inner join games on games.id = game_players.game_id
-          where games.resolution_time = 
-          (
-          select max(resolution_time) 
-          from games
-          inner join game_players on game_players.game_id = games.id and game_players.player_id = players.id
-          )
-          order by current_elo desc
-          limit #{n}"
-    Player.find_by_sql(sql)
+    # Find top X players with highest scores
+    Player.find Game.find_by_sql(["
+      select with_max_id.player_id
+      from
+        (select game_players.player_id, max(games.id) max_id, count(distinct games.id) no_of_games
+        from games
+        inner join game_players on game_players.game_id = games.id
+        group by game_players.player_id) with_max_id
+      inner join game_players on game_players.game_id = max_id and game_players.player_id = with_max_id.player_id
+      inner join games on games.id = game_players.game_id
+      where
+      with_max_id.no_of_games > 1
+      and games.resolution_time > ?
+      order by game_players.current_elo desc
+      limit #{n}
+      ", Time.now - 1.week]).map(&:player_id)
   end
 
   def name
