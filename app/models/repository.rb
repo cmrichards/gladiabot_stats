@@ -119,12 +119,13 @@ class Repository
       GROUP BY players.id, players.name, games.mission_id
       having count(*) >= :minimum_number_of_games
       order by win desc
-      limit 10",
+      limit :top_x_players",
       {
         mission_id: mission.id,
         start_date:  map_form.date_range.first,
         end_date: map_form.date_range.last,
-        minimum_number_of_games: map_form.minimum_number_of_games
+        minimum_number_of_games: map_form.minimum_number_of_games,
+        top_x_players: map_form.top_x_players
       }
     ]
     Game.find_by_sql(sql).map do |row|
