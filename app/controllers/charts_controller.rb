@@ -7,7 +7,7 @@ class ChartsController < ApplicationController
   # GET /charts/player
   def player
     load_form
-    @top_players = Player.top_players(50) if @form.invalid?
+    @top_players = Player.top_players(50) if @form.player.blank?
   end
 
   # GET /charts/player_games
@@ -26,8 +26,8 @@ class ChartsController < ApplicationController
 
   def load_form
     @form = PlayerForm.new params[:form]
-    @form.player_name = params[:player_name] if params[:player_name].present?
-    @form.opponent_player_name = params[:opponent_player_name] if params[:opponent_player_name].present?
+    @form.player_name = params[:player_name] if params[:form].blank? && params[:player_name].present?
+    @form.opponent_player_name = params[:opponent_player_name] if params[:form].blank? && params[:opponent_player_name].present?
     @player_charts = PlayerCharts.new(@form) if @form.player_name.present? && @form.valid?
   end
 
