@@ -15,13 +15,6 @@ class ChartsController < ApplicationController
     load_form
   end
 
-  # GET /charts/global
-  def global
-    player_elos = Repository.create_player_elos(start_date: Time.now - 3.weeks,
-                                                end_date: Time.now + 2.hours)
-    @player_elo_chart = PlayerEloChart.new(player_elos, title: "Top 20 Players Leaderboard")
-  end
-
   private
 
   def load_form
