@@ -67,6 +67,14 @@
          <% if flash[:alert].present? %>
          toastr["error"]("", "<%=flash[:alert]%>")
          <% end %>
+        $(function() {
+            $(".highcharts-xaxis-labels text").click(function() {
+                var name = $(this).find('title').text();
+                if(!name) name = $(this).text();
+                // alert($(this).find('title').text());
+                location.href="<%=url_for("/")%>"+name;
+            });
+        });
         </script>
     </body>
 </html>
