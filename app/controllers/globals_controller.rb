@@ -29,7 +29,7 @@ class GlobalsController < ApplicationController
 
     attribute :start_date,  Date, default: ->(form, attribute) { Time.now - 14.days }
     attribute :end_date,    Date, default: ->(form, attribute) { Time.now }
-    attribute :minimum_number_of_games, Integer, default: 10
+    attribute :minimum_number_of_games, Integer, default: 15
     attribute :elo_range_min, Integer, default: 0
     attribute :elo_range_max, Integer, default: 3000
 
