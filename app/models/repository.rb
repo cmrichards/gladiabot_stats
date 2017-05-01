@@ -100,6 +100,43 @@ class Repository
     end.sort_by{ |pe| pe.elos.last.elo_delta }
   end
 
+  def self.best_on_map(map_form, mission)
+    sql = [
+      "
+      SELECT
+        players.id player_id,
+        players.name player_name,
+        games.mission_id,
+        sum(CASE WHEN games.player_id=players.id THEN 1.0 else 0.0 END) / count(*) * 100 win,
+        sum(CASE WHEN games.draw=0 and games.player_id!=players.id THEN 1.0 else 0.0 END) / count(*) * 100 lose,
+        cast (SUM(games.draw)  as float) / count(*) * 100 draw 
+      FROM games
+      INNER JOIN game_players ON game_players.game_id = games.id
+      INNER JOIN players on players.id = game_players.player_id
+      WHERE
+      games.mission_id  = :mission_id
+      AND games.resolution_time between :start_date and :end_date
+      GROUP BY players.id, players.name, games.mission_id
+      having count(*) >= :minimum_number_of_games
+      order by win desc
+      limit 10",
+      {
+        mission_id: mission.id,
+        start_date:  map_form.date_range.first,
+        end_date: map_form.date_range.last,
+        minimum_number_of_games: map_form.minimum_number_of_games
+      }
+    ]
+    Game.find_by_sql(sql).map do |row|
+      PlayerStat.new(
+        opponent: Player.new(id: row.player_id, name: row.player_name),
+        win: row.win,
+        lose: row.lose,
+        draw: row.draw
+      )
+    end
+  end
+
   def self.create_map_stats(player_form)
     sql = [
       "SELECT

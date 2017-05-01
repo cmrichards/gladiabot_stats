@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
+  resources :tournaments
   resources :scrapers
+  resources :globals do
+    collection do
+      get "maps"
+      get "leaderboard"
+    end
+  end
   resources :players
   resources :uploaders do
     collection do

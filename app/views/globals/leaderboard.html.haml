@@ -1,0 +1,8 @@
+- content_for :sidebar do
+  //= render "player_search", form: PlayerForm.new
+  .search_box
+    &nbsp;
+.row
+  .col
+    = render "tabs"
+    = render "charts/time_line_chart", chart: @player_elo_chart, height: 700, legend: true

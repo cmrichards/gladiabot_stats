@@ -8,7 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <%= csrf_meta_tags %>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
         <%= stylesheet_link_tag    'application', media: 'all' %>
         <%= javascript_include_tag 'application' %>
@@ -18,9 +17,11 @@
     <body>
         <div class="container-fluid">
             <div class="row" >
+                <% unless false && controller_name[/tournaments/] %>
                 <div class="sidebar_col hidden-sm-down">
                     <%= yield :sidebar%>
                 </div>
+                <% end  %>
                 <div class="col">
                     <div class="row" style="position: fixed; width: 100%;z-index: 1000; ">
                         <div class="col nav-header">
@@ -29,7 +30,10 @@
                                     <%= link_to "Player Stats", player_charts_url, class: "nav-link #{'active' if action_name[/player/]}" %>
                                 </li>
                                 <li class="nav-item">
-                                    <%= link_to "Global Stats", global_charts_url, class: "nav-link #{'active' if action_name=='global'}" %>
+                                    <%= link_to "Global Stats", maps_globals_url, class: "nav-link #{'active' if controller_name[/global/]}" %>
+                                </li>
+                                <li class="nav-item">
+                                    <%= link_to "Tournaments", tournaments_url, class: "nav-link #{'active' if controller_name[/tournam/]}" %>
                                 </li>
                                 <% if false %>
                                     <li class="nav-item">
@@ -59,7 +63,5 @@
          toastr["error"]("", "<%=flash[:alert]%>")
          <% end %>
         </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     </body>
 </html>
