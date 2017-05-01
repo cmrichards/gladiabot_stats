@@ -15,7 +15,10 @@ Highcharts.chart('<%= chart.object_id %>', {
     yAxis: {
         title: {
             text: '<%= chart.y_axis_title %>'
-        }
+        },
+        <% if defined?(chart.max_value) && chart.max_value %>
+        max: <%=chart.max_value %>
+        <% end %>
     },
     legend: {
         reversed: true

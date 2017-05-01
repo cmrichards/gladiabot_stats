@@ -4,7 +4,7 @@ class PlayerStat
                 :win, :draw, :lose,
                 :elo_delta
 
-  def initialize(player:, opponent:, win:, lose:, draw:, elo_delta:)
+  def initialize(player:nil, opponent:nil, win:, lose:, draw:, elo_delta:nil)
     @player = player
     @opponent = opponent
     @win = win

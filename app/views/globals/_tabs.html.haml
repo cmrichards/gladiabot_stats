@@ -1,0 +1,5 @@
+%ul.nav.nav-tabs{style: "margin-bottom: 20px;"}
+  %li.nav-item
+    = link_to "Maps", maps_globals_url(form: params[:form], player_name: params[:player_name]), class: "nav-link #{'active' if action_name=='maps'}" 
+  %li.nav-item
+    = link_to "Leaderboard", leaderboard_globals_url(form: params[:form], player_name: params[:player_name]), class: "nav-link #{'active' if action_name=='leaderboard'}" 

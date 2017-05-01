@@ -1,15 +1,19 @@
 class StackedPlayerGamesChart
 
-  def initialize(form, player_stats, number_of_players: 50)
-    @form = form
+  def initialize(player_stats, title:,
+                 number_of_players: 50,
+                 y_axis: "Number",
+                 max_value: nil)
+    @max_value = max_value
+    @y_axis = y_axis
+    @title = title
     @number_of_players = number_of_players
-    @stats = player_stats.sort_by(&:total_games).
-             reverse[0..(@number_of_players - 1)]
+    @stats = player_stats
     @opponents = @stats.map(&:opponent)
   end
 
   def title
-    "Top #{@number_of_players} #{@form.player.name} Played Against"
+    @title
   end
 
   def categories
@@ -17,7 +21,11 @@ class StackedPlayerGamesChart
   end
 
   def y_axis_title
-    "Number of Games"
+    @y_axis
+  end
+
+  def max_value
+    @max_value
   end
 
   def series

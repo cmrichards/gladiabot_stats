@@ -36,7 +36,8 @@ class PlayerCharts
   end
 
   def stacked_players_chart
-    @spc||= StackedPlayerGamesChart.new(@form, player_stats)
+    stats = player_stats.sort_by(&:total_games).reverse[0..49]
+    @spc||= StackedPlayerGamesChart.new(stats, title: "Top 50 #{@form.player.name} Played Against")
   end
 
   def elo_delta_chart

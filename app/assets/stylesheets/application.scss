@@ -10,14 +10,17 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require bootstrap
  */
 
 @import "bootstrap";
-@import "easy-autocomplete.min";
-@import "pikaday";
-@import "toastr.min";
-@import "tournaments";
 
+.tournaments {
+
+    table {
+    }
+    
+}
 body {
   min-height: 100vh;
   background-color: #FDFDFD;

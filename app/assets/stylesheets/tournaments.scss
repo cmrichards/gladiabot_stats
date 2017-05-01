@@ -1,0 +1,39 @@
+// Place all the styles related to the tournaments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.tournaments {
+
+    table {
+        @extend .table;
+        @extend .table-sm;
+        @extend .table-hover;
+        th, td {
+            font-size: 80%;
+        }
+        thead {
+            @extend .thead-inverse;
+        }
+        thead tr th {
+            background-color: #3a4b4b;
+            color: white;
+        }
+    }
+    p {
+        font-size: 80%;
+        color: #999;
+    }
+    
+}
+.list-group-item-success {
+    color: white;
+    background-color: #3a4b4b;
+}
+
+.list-group-item-success.active {
+    color: white;
+    background-color: #ff5836;
+}
+
+.list-group-item {
+    font-size: 90%;
+}

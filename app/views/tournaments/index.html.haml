@@ -1,0 +1,43 @@
+.alert.alert-danger
+  THIS IS NOT REAL DATA 
+%h1 Unavoidable Tournaments
+
+- content_for :sidebar do
+  .search_box
+    %ul.list-group{style: "margin-bottom: 20px;"}
+      %li.list-group-item.list-group-item-success Archive
+      %li.list-group-item Direct Fights
+      %li.list-group-item XP Gains
+      %li.list-group-item Average Score
+      %li.list-group-item Streaks
+    %ul.list-group
+      %li.list-group-item.list-group-item-success Previous Weeks
+      %li.list-group-item.active 24-04-2017 - 30-04-2017
+      %li.list-group-item 14-04-2017 - 20-04-2017
+      %li.list-group-item 04-04-2017 - 10-04-2017
+      %li.list-group-item 24-03-2017 - 30-03-2017
+
+.row.tournaments
+  .col
+    %h4 Direct Fights
+    = render "direct_fight"
+  .col
+    %h4 XP Gains
+    = render "direct_fight"
+  .col
+    %h4 Average Score
+    = render "direct_fight"
+  .col
+    %h4 Streaks
+    = render "direct_fight"
+
+:javascript
+  $(function() {
+    // link to player stats page
+    $(".tournaments tbody tr td:first-child").each(function(i){
+      var name = $(this).html();
+      var link = "<a href='/"+name+"'>"+name+'</a>';
+      $(this).html(link);
+    });
+  });
+
