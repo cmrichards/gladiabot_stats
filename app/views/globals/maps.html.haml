@@ -5,29 +5,34 @@
       .row
         .col-12
           .form-group
-            %label.col-form-label.col-form-label-sm.hidden-md-down Date From
+            %label.col-form-label.col-form-label-sm Date From
             = f.text_field :start_date, class: "form-control form-control-sm", required: true, id: "date-from",
               value: (@form.start_date && @form.start_date.strftime("%d %b %Y"))
         .col-12
           .form-group
-            %label.col-form-label.col-form-label-sm.hidden-md-down Date To
+            %label.col-form-label.col-form-label-sm Date To
             = f.text_field :end_date,   class: "form-control form-control-sm", required: true, id: "date-to",
               value: (@form.end_date && @form.end_date.strftime("%d %b %Y"))
         - if false
           .col-12
             .form-group
-              %label.col-form-label.col-form-label-sm.hidden-md-down Elo From
+              %label.col-form-label.col-form-label-sm Elo From
               = f.text_field :elo_range_min, type: "number",
               class: "form-control form-control-sm"
           .col-12
             .form-group
-              %label.col-form-label.col-form-label-sm.hidden-md-down Elo To
+              %label.col-form-label.col-form-label-sm Elo To
               = f.text_field :elo_range_max, type: "number",
               class: "form-control form-control-sm"
         .col-12
           .form-group
-            %label.col-form-label.col-form-label-sm.hidden-md-down Min. Games
+            %label.col-form-label.col-form-label-sm Minimum Games Played
             = f.text_field :minimum_number_of_games, type: "number",
+            class: "form-control form-control-sm"
+        .col-12
+          .form-group
+            %label.col-form-label.col-form-label-sm Players to Show
+            = f.text_field :top_x_players, type: "number",
             class: "form-control form-control-sm"
         .col-12
           .form-group

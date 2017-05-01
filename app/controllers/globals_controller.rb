@@ -8,7 +8,8 @@ class GlobalsController < ApplicationController
     if @form.valid?
       @best_on_maps = Mission.active.map do |mission|
         player_stats = Repository.best_on_map(@form, mission)
-        StackedPlayerGamesChart.new(player_stats, title: mission.name,
+        StackedPlayerGamesChart.new(player_stats,
+                                    title: mission.name,
                                     y_axis: "Percentage",
                                     max_value: 100.0)
       end
@@ -29,11 +30,13 @@ class GlobalsController < ApplicationController
 
     attribute :start_date,  Date, default: ->(form, attribute) { Time.now - 14.days }
     attribute :end_date,    Date, default: ->(form, attribute) { Time.now }
-    attribute :minimum_number_of_games, Integer, default: 15
+    attribute :minimum_number_of_games, Integer, default: 20
     attribute :elo_range_min, Integer, default: 0
     attribute :elo_range_max, Integer, default: 3000
+    attribute :top_x_players, Integer, default: 10
 
     validates :start_date, :elo_range_min, :elo_range_max, :minimum_number_of_games,
+              :top_x_players,
               presence: true
     validate :check_dates
 
