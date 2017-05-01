@@ -1,7 +1,7 @@
 = render "tabs"
 - content_for :sidebar do
   .search_box
-    = form_with model: @form, :scope=>:form, :url=>( globals_url ), method: :get, class: "form" do |f|
+    = form_with model: @form, :scope=>:form, :url=>( maps_globals_url ), method: :get, class: "form" do |f|
       .row
         .col-12
           .form-group
