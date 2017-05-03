@@ -131,9 +131,9 @@ class Repository
     Game.find_by_sql(sql).map do |row|
       PlayerStat.new(
         opponent: Player.new(id: row.player_id, name: row.player_name),
-        win: row.win,
-        lose: row.lose,
-        draw: row.draw
+        win: row.win.round(2),
+        lose: row.lose.round(2),
+        draw: row.draw.round(2)
       )
     end
   end
