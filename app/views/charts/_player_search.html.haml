@@ -5,12 +5,6 @@
         $(function() {
           $("#player_name").focus();
         })
-      - if false && Game.exists?
-        %p.hidden-md-down
-          Data is available for games between:
-          #{Game.minimum(:resolution_time).to_s(:long)}
-          and
-          #{Game.maximum(:resolution_time).to_s(:long)}
 
       = form_with model: form, :scope=>:form, :url=>( action_name[/global/] ? player_charts_url : url_for()), method: :get, class: "form" do |f|
         .row

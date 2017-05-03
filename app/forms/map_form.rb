@@ -9,10 +9,10 @@ class MapForm
   attribute :elo_range_max, Integer, default: 3000
   attribute :top_x_players, Integer, default: 10
 
+  validate :check_dates
   validates :start_date, :elo_range_min, :elo_range_max, :minimum_number_of_games,
             :top_x_players,
             presence: true
-  validate :check_dates
 
   def date_range
     start_date.at_beginning_of_day..end_date.end_of_day
