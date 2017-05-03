@@ -53,7 +53,7 @@ class Repository
       inner join game_players on game_players.game_id = max_id and game_players.player_id = with_max_id.player_id
       inner join games on games.id = game_players.game_id
       where
-      with_max_id.no_of_games > 1
+      with_max_id.no_of_games > 0
       and games.resolution_time > ?
       order by game_players.current_elo desc
       limit 20
