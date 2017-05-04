@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   end
   resources :uploaders do
     collection do
-      post "add_players"
-      post "add_games"
+      get "add_players"
+      get "add_games"
     end
   end
 
