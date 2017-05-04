@@ -4,7 +4,11 @@
       :javascript
         $(function() {
           $("#player_name").focus();
+          $("#player_name").on("click", function () {
+              $(this).select();
+          });
         })
+
 
       = form_with model: form, :scope=>:form, :url=>( action_name[/global/] ? player_charts_url : url_for()), method: :get, class: "form" do |f|
         .row
