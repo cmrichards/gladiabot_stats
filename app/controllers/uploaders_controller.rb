@@ -13,5 +13,4 @@ class UploadersController < ApplicationController
     render plain: "#{size} games added"
   end
 
-
 end
