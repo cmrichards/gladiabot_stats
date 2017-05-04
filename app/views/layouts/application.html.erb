@@ -13,7 +13,34 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <%= javascript_include_tag 'application' %>
         <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
     </head>
+    <script>
+    Highcharts.setOptions({
+        exporting: {
+            printMaxWidth: 500,
+            scale: 1
+        },
+        navigation: {
+            buttonOptions: {
+                symbolSize: 10,
+                symbolStrokeWidth: 1,
+                align: "left"
+            }
+
+        },
+        title: {
+            style: {
+                fontSize: "16px"
+            }
+        },
+        subtitle: {
+            style: {
+                fontSize: "10px"
+            }
+        }
+    });
+    </script>
 
     <body>
         <div class="container-fluid">

@@ -9,6 +9,9 @@ Highcharts.chart('<%= chart.object_id %>', {
     title: {
         text: '<%= chart.title %>'
     },
+    subtitle: {
+        text: '<%= chart.subtitle %>'
+    },
     xAxis: {
         categories: [ <%= raw chart.categories.map{|name| "'#{name}'"}.join(",") %> ]
     },

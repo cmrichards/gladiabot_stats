@@ -2,17 +2,16 @@
 </div>
 
 <script>
-Highcharts.chart('<%= chart.object_id %>', {
+charts.push(['<%=chart.object_id%>', Highcharts.chart('<%= chart.object_id %>', {
     chart: {
         type: '<%= defined?(type) ? type : "spline"%>',
         reflow: <%= defined?(disable_resize) ? "false" : "true" %>
     },
     title: {
         text: <%= chart.title.present? ? raw("'#{chart.title}'") : "false" %>,
-        //margin: 0,
-        style: {
-            // fontSize: "13px"
-        }
+    },
+    subtitle: {
+         text: '<%= chart.subtitle %>'
     },
     xAxis: {
         type: 'datetime',
@@ -56,5 +55,5 @@ Highcharts.chart('<%= chart.object_id %>', {
        },
        <% end %>
     ]
-});
+})]);
 </script>

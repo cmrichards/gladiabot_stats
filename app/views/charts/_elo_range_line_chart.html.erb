@@ -2,20 +2,16 @@
 </div>
 <script>
 Highcharts.chart('<%= chart.object_id %>', {
-
      chart: {
          type: "spline"
-         },
-
-
+     },
      plotOptions: {
          spline: {
              marker: {
                  enable: false
              }
          }
-     },
-
+    },
     title: {
         text: '<%=chart.title%>'
     },

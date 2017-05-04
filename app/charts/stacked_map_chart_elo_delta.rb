@@ -1,13 +1,14 @@
 class StackedMapChartEloDelta
+  attr_reader :subtitle
 
-  def initialize(form, map_stats)
-    @form = form
+  def initialize(map_stats, subtitle: nil)
+    @subtitle = subtitle
     @map_stats  = map_stats.sort_by(&:lose_percentage)
     @missions   = @map_stats.map(&:mission)
   end
 
   def title
-    "Elo Delta for " + (@form.opponent ? "#{@form.player.name} against #{@form.opponent.name}" : "All Maps")
+    "Elo Delta"
   end
 
   def categories

@@ -8,7 +8,8 @@ class GlobalsController < ApplicationController
         StackedPlayerGamesChart.new(player_stats,
                                     title: mission.name,
                                     y_axis: "Percentage",
-                                    max_value: 100.0)
+                                    max_value: 100.0,
+                                    subtitle: @form.subtitle)
       end
     end
   end
