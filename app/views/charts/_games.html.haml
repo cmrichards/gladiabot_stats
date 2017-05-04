@@ -2,7 +2,7 @@
   %table.table.table-sm.table-hover.games-table
     %thead
       %tr
-        %th Time
+        %th Time 
         %th Replay ID
         %th VS
         %th Map
@@ -10,8 +10,12 @@
     %tbody
       - games.each do |game|
         %tr{class: (game.draw? && "table-warning" || game.winner?(main_player_id) && "" || "table-danger")}
-          %td= game.resolution_time.strftime "%d %b %y"
+          %td.time_td
+            - if game.resolution_time.to_date == Date.today
+              %b= game.resolution_time_f
+            - else
+              = game.resolution_time_f
           %td= game.id
-          %td= game.opponent_name || game.opponent_id
-          %td= game.mission_name
+          %td.player_td= game.opponent_name || game.opponent_id
+          %td.mission_td= game.mission_name
           %td= game.elo_delta

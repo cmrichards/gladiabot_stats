@@ -23,6 +23,21 @@ body {
   background-color: #FDFDFD;
 }
 
+.time_td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mission_td {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.player_td {
+}
+
 .last_game {
     color: #999;
     font-size: 90%;

@@ -1,0 +1,26 @@
+- if current_player_name
+  - if @player_elo_chart
+    %div.hidden-sm-down{style: "margin-right: -10px;"}
+      = render "time_line_chart", chart: @player_elo_chart, height: 150, legend: false,
+        disable_resize: true
+  .row
+    .col-sm-0.col-md-2 
+    .col-sm-12.col-md-8
+      %h1 Hello #{current_player_name}!
+      %p
+        = link_to "View My Stats", player_charts_url(player_name: current_player_name)
+        &nbsp;|&nbsp;
+        = link_to "Forget About Me", forget_me_players_url
+    .col-sm-0.col-md-8 
+- else
+  .who_are_you
+    .row
+      .col-sm-2
+      .col-sm-8.effect1{style: "padding: 40px; background-color: white;"}
+        = form_with url: remember_me_players_path, class: "form form-inline" do |f|
+          %h1 Who are you?
+          %p If you add your username here then the site will remember you and give you quick access to your stats.
+          = f.text_field :player_name, class: "player_autocomplete"
+          = f.submit "Remember Me", class: "btn btn-primary btn-sm", style: "margin-left: 20px;"
+      .col-sm-2
+    .clear &nbsp;

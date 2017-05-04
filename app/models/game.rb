@@ -28,6 +28,14 @@ class Game < ApplicationRecord
     self.player_id == player_id
   end
 
+  def resolution_time_f
+    if resolution_time.to_date == Date.today
+      resolution_time.strftime("%H:%M")
+    else
+      resolution_time.strftime "%-d %b %H:%M"
+    end
+  end
+
   def self.latest_resolution_time_for_player(player_id)
     Game.joins(:game_players).
       where(game_players: { player_id: player_id }).maximum(:resolution_time)

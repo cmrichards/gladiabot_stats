@@ -1,8 +1,10 @@
 .row.hidden-sm-down
   .col &nbsp;
   .col.col-xs-12.col-md-8
-    %p{style: "margin-top: 50px;"}
-      Search for any player or view the stats for any of the top 50 players:
+    %p{style: "margin-top: 10px;"}
+      - if current_player.blank?
+        Search for any player
+      or view the stats for any of the top 50 players:
     %p
       - @top_players.each do |player|
         #{link_to player.name, "/#{player.name}"}#{raw(",&nbsp;") unless player == @top_players.last}
