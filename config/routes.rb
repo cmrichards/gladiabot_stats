@@ -7,7 +7,12 @@ Rails.application.routes.draw do
       get "leaderboard"
     end
   end
-  resources :players
+  resources :players do
+    collection do
+      post "remember_me"
+      get "forget_me"
+    end
+  end
   resources :uploaders do
     collection do
       post "add_players"

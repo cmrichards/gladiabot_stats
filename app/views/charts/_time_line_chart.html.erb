@@ -4,10 +4,11 @@
 <script>
 Highcharts.chart('<%= chart.object_id %>', {
     chart: {
-        type: '<%= defined?(type) ? type : "spline"%>'
+        type: '<%= defined?(type) ? type : "spline"%>',
+        reflow: <%= defined?(disable_resize) ? "false" : "true" %>
     },
     title: {
-        text: '<%= chart.title %>',
+        text: <%= chart.title.present? ? raw("'#{chart.title}'") : "false" %>,
         //margin: 0,
         style: {
             // fontSize: "13px"

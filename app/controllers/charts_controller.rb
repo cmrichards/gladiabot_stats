@@ -7,7 +7,16 @@ class ChartsController < ApplicationController
   # GET /charts/player
   def player
     load_form
-    @top_players = Player.top_players(50) if @form.player.blank?
+    if @form.player.blank?
+      @top_players = Player.top_players(50) 
+      if current_player
+        player_elos = Repository.create_player_elos(player_ids: [current_player.id],
+                                                    start_date: Date.today - 3.weeks,
+                                                    end_date:   Date.tomorrow,
+                                                    group_by_date: false)
+        @player_elo_chart = PlayerEloChart.new(player_elos, title: nil)
+      end
+    end
   end
 
   # GET /charts/player_games
@@ -19,8 +28,11 @@ class ChartsController < ApplicationController
 
   def load_form
     @form = PlayerForm.new params[:form]
-    @form.player_name = params[:player_name] if params[:form].blank? && params[:player_name].present?
-    @form.opponent_player_name = params[:opponent_player_name] if params[:form].blank? && params[:opponent_player_name].present?
+    if params[:form].blank?
+      # Passed in using special route
+      @form.player_name = params[:player_name] 
+      @form.opponent_player_name = params[:opponent_player_name] 
+    end
     @player_charts = PlayerCharts.new(@form) if @form.player_name.present? && @form.valid?
   end
 
