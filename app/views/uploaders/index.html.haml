@@ -10,18 +10,8 @@
 
 %p
   Select player dump files :
-  = form_tag add_players_uploaders_path, multipart: true do
-    = text_field_tag "code", "", placeholder: "Enter admin code"
-    = file_field_tag "file[]", multiple: true
-    = submit_tag "Upload Player Dump Files"
+  = link_to "Add Players", add_players_uploaders_path
 
 %p
   Select game dump files :
-  - if false
-    %br/
-    Any games more than 21 days older than the most recent game are automatically deleted after a new dump is uploaded.
-
-  = form_tag add_games_uploaders_path, multipart: true do
-    = text_field_tag "code", "", placeholder: "Enter admin code"
-    = file_field_tag "file[]", multiple: true
-    = submit_tag "Upload Game Dump Files"
+  = link_to "Add Games", add_games_uploaders_path
