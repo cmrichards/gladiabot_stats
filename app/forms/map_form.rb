@@ -18,6 +18,16 @@ class MapForm
     start_date.at_beginning_of_day..end_date.end_of_day
   end
 
+  def subtitle
+    desc = ""
+    if start_date.to_date == end_date.to_date
+      desc << start_date.strftime("%d-%b-%y")
+    else
+      desc << "#{start_date.strftime("%d-%b-%y")} to #{end_date.strftime("%d-%b-%y")}"
+    end
+    desc
+  end
+
   private
 
   def check_dates

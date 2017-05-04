@@ -1,9 +1,12 @@
 class StackedPlayerGamesChart
+  attr_reader :subtitle
 
   def initialize(player_stats, title:,
                  number_of_players: 50,
                  y_axis: "Number",
-                 max_value: nil)
+                 max_value: nil,
+                 subtitle: nil)
+    @subtitle = subtitle
     @max_value = max_value
     @y_axis = y_axis
     @title = title

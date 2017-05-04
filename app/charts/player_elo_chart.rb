@@ -1,8 +1,9 @@
 class PlayerEloChart
-  attr_reader :title
+  attr_reader :title, :subtitle
 
-  def initialize(player_elos, title: "Historical Player Elo")
+  def initialize(player_elos, title: "Historical Player Elo", subtitle: nil)
     @title = title
+    @subtitle = subtitle
     @player_elos = player_elos.sort_by { |pe|
       pe.elos.last.elo_delta
     }.reverse

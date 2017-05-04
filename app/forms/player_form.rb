@@ -32,6 +32,22 @@ class PlayerForm
     @am ||= Mission.active
   end
 
+  def subtitle(ignore_opponent: false)
+    desc = player.name.dup
+    desc << " VS #{opponent.name}" if opponent && !ignore_opponent
+    desc << " - "
+    desc << date_f
+    desc
+  end
+
+  def date_f
+    if start_date.to_date == end_date.to_date
+      start_date.strftime("%d-%b-%y")
+    else
+      "#{start_date.strftime("%d-%b-%y")} to #{end_date.strftime("%d-%b-%y")}"
+    end
+  end
+
   private
 
   def check_players_names

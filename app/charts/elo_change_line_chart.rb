@@ -1,12 +1,13 @@
 class EloChangeLineChart
+  attr_reader :subtitle
 
-  def initialize(form, elo_dates)
-    @form = form
+  def initialize(elo_dates, subtitle: nil)
+    @subtitle = subtitle
     @elo_dates = elo_dates.sort_by(&:date)
   end
 
   def title
-    @form.opponent ? "Daily Elo Delta against #{@form.opponent.name}" : "Daily Elo Delta" 
+    "Daily Elo Delta"
   end
 
   def y_axis_title

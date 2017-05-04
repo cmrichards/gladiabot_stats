@@ -1,12 +1,15 @@
 class StackedMapChart
-  def initialize(form, map_stats)
-    @form = form
+  attr_reader :title, :subtitle
+
+  def initialize(map_stats, title:, subtitle: nil)
+    @title = title
+    @subtitle = subtitle
     @map_stats  = map_stats.sort_by(&:lose_percentage)
     @missions   = @map_stats.map(&:mission)
   end
 
-  def title
-    @form.opponent ? "#{@form.player.name} against #{@form.opponent.name}" : "All Maps"
+  def to_partial_path
+    "charts/stacked_bar_chart"
   end
 
   def categories

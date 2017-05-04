@@ -27,21 +27,27 @@ class PlayerCharts
                                                   start_date: @form.date_range.first,
                                                   end_date:   @form.date_range.last,
                                                   group_by_date: false)
-      PlayerEloChart.new(player_elos)
+      PlayerEloChart.new(player_elos, subtitle: @form.subtitle)
     end
   end
 
   def elo_change_line_chart
-    @eclc ||= EloChangeLineChart.new(@form, Repository.create_elo_dates(@form))
+    @eclc ||= EloChangeLineChart.new(Repository.create_elo_dates(@form), subtitle: @form.subtitle)
   end
 
   def stacked_players_chart
     stats = player_stats.sort_by(&:total_games).reverse[0..49]
-    @spc||= StackedPlayerGamesChart.new(stats, title: "Top 50 #{@form.player.name} Played Against")
+    @spc||= StackedPlayerGamesChart.new(stats,
+                                        number_of_players: 50,
+                                        title: "Top 50 Played Against",
+                                        subtitle: @form.subtitle(ignore_opponent: true))
   end
 
   def elo_delta_chart
-    @edc ||= StackedPlayerEloDeltaChart.new(@form, player_stats, number_of_players: 50)
+    @edc ||= StackedPlayerEloDeltaChart.new(player_stats,
+                                            number_of_players: 50,
+                                            title: "Top 50 Elo Delta",
+                                            subtitle: @form.subtitle(ignore_opponent: true))
   end
 
   def individual_map_stats
@@ -49,11 +55,13 @@ class PlayerCharts
   end
 
   def stacked_map_chart
-    @smc ||= StackedMapChart.new(@form, individual_map_stats)
+    @smc ||= StackedMapChart.new(individual_map_stats,
+              title: "All Maps",
+              subtitle: @form.subtitle)
   end
 
   def stacked_map_chart_elo_delta
-    @smced ||= StackedMapChartEloDelta.new(@form, individual_map_stats)
+    @smced ||= StackedMapChartEloDelta.new(individual_map_stats, subtitle: @form.subtitle)
   end
 
   private
