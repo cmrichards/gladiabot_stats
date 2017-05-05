@@ -2,10 +2,6 @@ class LoadFromApi
   require "httparty"
 
   def add_games
-    if params[:admin_code]!=Rails.application.secrets.admin_code
-      render plain: "incorrect admin code"
-      return
-    end
     games_added = 0
     csv = HTTParty.get(Rails.application.secrets.games_api_url)
     Player.transaction do
@@ -51,14 +47,10 @@ class LoadFromApi
         end
       end
     end
-    return game_added
+    return games_added
   end
 
   def add_players
-    if params[:admin_code]!=Rails.application.secrets.admin_code
-      render plain: "incorrect admin code"
-      return
-    end
     csv = HTTParty.get(Rails.application.secrets.players_api_url)
     players_added = 0
     Player.transaction do

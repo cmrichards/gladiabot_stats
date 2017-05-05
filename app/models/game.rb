@@ -30,9 +30,9 @@ class Game < ApplicationRecord
 
   def resolution_time_f
     if resolution_time.to_date == Date.today
-      resolution_time.strftime("%H:%M")
+      resolution_time.utc.strftime("%H:%M")
     else
-      resolution_time.strftime "%-d %b %H:%M"
+      resolution_time.utc.strftime "%-d %b %H:%M"
     end
   end
 
