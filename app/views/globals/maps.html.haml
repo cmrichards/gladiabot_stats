@@ -26,7 +26,7 @@
               class: "form-control form-control-sm"
         .col-12
           .form-group
-            %label.col-form-label.col-form-label-sm Minimum Games Played
+            %label.col-form-label.col-form-label-sm Min Games Played Per Map
             = f.text_field :minimum_number_of_games, type: "number",
             class: "form-control form-control-sm"
         .col-12
@@ -34,6 +34,22 @@
             %label.col-form-label.col-form-label-sm Players to Show
             = f.text_field :top_x_players, type: "number",
             class: "form-control form-control-sm"
+        .col-12
+          .form-group
+            %label.col-form-label.col-form-label-sm
+              Elo Range
+              %span.badge.badge-default{data: {toggle: "tooltip", placement: "right"},
+                                        title: "Only includes games where the player had an ELO rating between these values when the game started"}
+                ?
+            .row
+              .col-5
+                = f.text_field :elo_range_min, type: "number",
+              class: "form-control form-control-sm"
+              .col-2
+                \-
+              .col-5
+                = f.text_field :elo_range_max, type: "number",
+              class: "form-control form-control-sm"
         .col-12
           .form-group
             %button{type: "submit", class: "btn btn-primary btn-block btn-sm"}

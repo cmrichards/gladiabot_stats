@@ -7,6 +7,7 @@
         %th VS
         %th Map
         %th Elo Delta
+        %th.hidden-sm-down Result
     %tbody
       - games.each do |game|
         %tr{class: (game.draw? && "table-warning" || game.winner?(main_player_id) && "" || "table-danger")}
@@ -16,6 +17,10 @@
             - else
               = game.resolution_time_f
           %td= game.id
-          %td.player_td= game.opponent_name || game.opponent_id
+          %td.player_td
+            = game.opponent_name || game.opponent_id
+            (#{game.opponent_elo})
           %td.mission_td= game.mission_name
           %td= game.elo_delta
+          %td.hidden-sm-down
+            = game.status_f(main_player_id)
