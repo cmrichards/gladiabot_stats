@@ -2,7 +2,7 @@ class Game < ApplicationRecord
   belongs_to :player, required: false
   belongs_to :mission, required: false
   has_many :game_players, dependent: :destroy
-  has_many :player, through: :game_players
+  has_many :players, through: :game_players
 
   scope :by_resolution_time, -> { order("resolution_time desc") }
 
