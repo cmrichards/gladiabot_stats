@@ -57,7 +57,7 @@ class Repository
       and games.resolution_time > ?
       order by game_players.current_elo desc
       limit 20
-      ", Time.now - 1.week]).map(&:player_id)
+      ", start_date]).map(&:player_id)
 
     sql =[
       "SELECT
@@ -116,6 +116,7 @@ class Repository
       WHERE
       games.mission_id  = :mission_id
       AND games.resolution_time between :start_date and :end_date
+      AND game_players.current_elo between :min_elo and :max_elo
       GROUP BY players.id, players.name, games.mission_id
       having count(*) >= :minimum_number_of_games
       order by win desc
@@ -125,7 +126,9 @@ class Repository
         start_date:  map_form.date_range.first,
         end_date: map_form.date_range.last,
         minimum_number_of_games: map_form.minimum_number_of_games,
-        top_x_players: map_form.top_x_players
+        top_x_players: map_form.top_x_players,
+        min_elo: map_form.elo_range_min,
+        max_elo: map_form.elo_range_max
       }
     ]
     Game.find_by_sql(sql).map do |row|

@@ -15,8 +15,9 @@ class GlobalsController < ApplicationController
   end
 
   def leaderboard
-    player_elos = Repository.create_player_elos(start_date: Time.now - 3.weeks,
-                                                end_date: Time.now + 2.hours)
+    latest_game = Game.order("resolution_time").last.resolution_time.to_date
+    player_elos = Repository.create_player_elos(start_date: latest_game - 5.weeks,
+                                                end_date: latest_game + 2.hours)
     @player_elo_chart = PlayerEloChart.new(player_elos, title: "Top 20 Players Leaderboard")
   end
 

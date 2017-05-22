@@ -20,6 +20,16 @@ class Game < ApplicationRecord
 
   validates :resolution_time, :id, presence: true
 
+  def status_f(player_id)
+    if draw?
+      "Draw"
+    elsif winner?(player_id)
+      "Win"
+    else
+      "Lose"
+    end
+  end
+
   def draw?
     draw == 1
   end
@@ -43,7 +53,7 @@ class Game < ApplicationRecord
 
   def self.all_games(player_id, opponent_id=nil)
     games= Game.
-           select("games.*, missions.name mission_name, opponent_game_player.player_id opponent_id, opponent.name opponent_name, game_players.elo_delta").
+           select("games.*, missions.name mission_name, opponent_game_player.player_id opponent_id, opponent_game_player.current_elo opponent_elo, opponent.name opponent_name, game_players.elo_delta").
            joins(:game_players, :mission).
            joins("inner join game_players opponent_game_player on opponent_game_player.game_id = games.id").
            joins("left outer join players opponent on opponent.id = opponent_game_player.player_id").
