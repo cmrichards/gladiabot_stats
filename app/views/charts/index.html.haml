@@ -5,7 +5,7 @@
   .col &nbsp;
   %div{style: "width: 80%; max-width: 1024px;"}
     .row
-      .col-md-4.col-sm-12
+      .col-md-6.col-sm-12
         .card.justify-content-between
           %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("map_charts.png")}); height: 160px; background-position: center; background-size:cover; "} 
           .card-block
@@ -18,7 +18,7 @@
             %li.list-group-item See which maps you lose most points on
           .card-block{style: "max-height: 80px;"}
             = link_to "View", player_charts_url, class: "btn btn-primary"
-      .col-md-4.col-sm-12
+      .col-md-6.col-sm-12
         .card.justify-content-between
           %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("historical_elo.png")}); height: 160px; background-position: center; background-size:cover; "} 
           .card-block
@@ -30,7 +30,7 @@
             %li.list-group-item Historical Elo Chart
           .card-block{style: "max-height: 80px;"}
             = link_to "View", maps_globals_url, class: "btn btn-primary"
-      .col-md-4.col-sm-12
+      .col-md-4.col-sm-12{style: "display: none;"}
         .card.justify-content-between
           %img.card-img-top.hidden-md-down{style: "background-image: url(#{image_url("tournament.jpg")}); height: 160px; background-position: left; background-size:cover; "} 
           .card-block
