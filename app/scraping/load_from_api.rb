@@ -6,7 +6,7 @@ class LoadFromApi
     csv = HTTParty.get(Rails.application.secrets.games_api_url)
 
     headings = csv[0]
-    game_id_i          = headings.index("id")
+    game_id_i          = 0
     player_1_elo_delta_i = headings.index("player1EloDelta")
     player_1_init_elo_rating_i = headings.index("player1InitEloRating")
     player_2_init_elo_rating_i = headings.index("player2InitEloRating")
@@ -20,11 +20,11 @@ class LoadFromApi
     mission_id_i      = headings.index("missionID")
 
     Player.transaction do
-      csv.each do |cols|
+      csv.each_with_index do |cols, i|
         game_id = cols[game_id_i]
 
         # Skip the header row and games already uploaded
-        next if game_id == "id" || Game.exists?(game_id)
+        next if game_id == "id" || i == 0 || Game.exists?(game_id) || cols[player_1_init_elo_time_i].blank?
 
         games_added += 1
 
